@@ -1,9 +1,11 @@
 package fitnessclub;
+import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
 
 public class MemberList {
     private Member[] members;
     private int size;
-
     private static final int NOT_FOUND = -1;
 
     /**
@@ -89,7 +91,17 @@ public class MemberList {
      * @throws IOException
      */
     public void load(File file) throws IOException{
+        if(!file.exists() || !file.isFile()) {throw new IOException();}
 
+        Scanner scanner = new Scanner(file);
+        while(!scanner.hasNextLine()){
+            int index=0;
+            String line = scanner.nextLine();
+            Member member = StudioManager.createMember(line);
+            members[index]=member;
+            grow();
+            index++;
+        }
     }
 
     /**

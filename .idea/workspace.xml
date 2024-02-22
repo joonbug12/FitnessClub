@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="f824ef11-0489-4ef4-bc11-9342d5aa7c5c" name="Changes" comment="" />
+    <list default="true" id="f824ef11-0489-4ef4-bc11-9342d5aa7c5c" name="Changes" comment="New updates">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/MemberList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/MemberList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Schedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Schedule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/StudioManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/StudioManager.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2chgR3enwGB9t5WKGgOmXmpgL5a" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -25,6 +40,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/joonsong/Desktop/Software Methodology /FitnessClub",
     "onboarding.tips.debug.path": "/Users/joonsong/Desktop/Software Methodology/FitnessClub/src/Main.java"
   }
 }]]></component>
@@ -44,7 +60,20 @@
       <option name="presentableId" value="Default" />
       <updated>1708569214399</updated>
     </task>
+    <task id="LOCAL-00001" summary="New updates">
+      <option name="closed" value="true" />
+      <created>1708617401165</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1708617401165</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="New updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="New updates" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
