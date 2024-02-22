@@ -14,15 +14,40 @@ public class Profile implements Comparable<Profile>{
         this.dob=dob;
     }
 
+    /**
+     * getter method
+     * @return first name
+     */
+    public String getFirstName() {return this.fname;}
+
+    /**
+     * getter method
+     * @return last name
+     */
+    public String getLastName() {return this.lname;}
+
+    /**
+     * getter method
+     * @return date of bith
+     */
+    public Date getDob() {return this.dob;}
+
 
     /**
      * compares 2 profiles
+     * @param profile to be compared
      * @return one/ zero, or -1
      */
     @Override
     public int compareTo(Profile profile){
-        int value = 0;
-        return value;
+        if (this.fname.compareToIgnoreCase(profile.fname) > 0) {return 1;}
+        if (this.fname.compareToIgnoreCase(profile.fname) < 0) {return -1;}
+        if (this.lname.compareToIgnoreCase(profile.lname) > 0) {return 1;}
+        if (this.lname.compareToIgnoreCase(profile.lname) < 0) {return -1;}
+        if(this.dob.compareTo(profile.dob)>0) {return 1;}
+        if (this.dob.compareTo(profile.dob) < 0) {return -1;}
+        return 0;
+
     }
 
     /**
@@ -30,10 +55,9 @@ public class Profile implements Comparable<Profile>{
      * @return true if equal, false if not
      */
     @Override
-    public boolean equals(Obj obj){
-        if(obj instanceof Profile) {
-            Profile profile = (Profile) obj;
-            return this.profile.equals(obj);
+    public boolean equals(Object obj) {
+        if (obj instanceof Profile profile) {
+            return this.compareTo(profile) == 0;
         }
         return false;
     }

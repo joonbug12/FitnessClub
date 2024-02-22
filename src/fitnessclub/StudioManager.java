@@ -50,49 +50,5 @@ public class StudioManager {
 
 
 
-
-
-    public void run () {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Studio Manager is up and running.");
-        while(true) {
-            String input = scan.nextLine();
-            String command = "";
-            if(input.indexOf(',') != -1) {
-                command = input.substring(0, input.indexOf(","));
-                input = input.substring(input.indexOf(",") + 1);
-            }
-            else
-                command = input;
-            //System.out.println(command);
-            if(command.equals("AB")) {
-                removeAlbum(input);
-            }
-            else if(command.equals("A")) {
-                Album album = createAlbum(input);
-                if(isValidAlbum(album)) {
-                    if (collection.add(album))
-                        System.out.println(album.getTitle() + " (" + album.getArtist().toString() + ") added to the collection.");
-                    else
-                        System.out.println(album.getTitle() + " (" + album.getArtist().toString() + ") is already in the collection.");
-                }
-            }
-            else if(command.equals("R")) {
-                createRating(input);
-            }
-            else if(command.equals("PD"))
-                collection.printByDate();
-            else if(command.equals("PG"))
-                collection.printByGenre();
-            else if(command.equals("PR"))
-                collection.printByRating();
-            else if(command.equals("Q"))
-                break;
-            else
-                System.out.println("Invalid Command!");
-        }
-        scan.close();
-        System.out.println("Collection Manager terminated.");
-    }
 }
 
