@@ -111,25 +111,20 @@ public class MemberList {
     }
 
     /**
-     * sort by county, city,  then zipcode
+     * sort by county, then zipcode
      */
     public void printByCounty(){
         for(int i=0; i<members.length-1; i++){
-            for(int j=i+1; i<members.length; j++){
+            for(int j=i+1; j<members.length; j++){
                 Member m1 = members[i];
                 Member m2 = members[j];
                 if(m1.getLocation().getCounty().compareTo(m2.getLocation().getCounty())>0){
                     members[i]=m2;
                     members[j]=m1;
                 }else if(m1.getLocation().getCounty().compareTo(m2.getLocation().getCounty())==0){
-                    if(m1.getLocation().getCity().compareTo(m2.getLocation().getCity())>0){
+                    if(m1.getLocation().getZipCode().compareTo(m2.getLocation().getZipCode())>0){
                         members[i]=m2;
                         members[j]=m1;
-                    }else if(m1.getLocation().getCity().compareTo(m2.getLocation().getCity())==0){
-                        if(m1.getLocation().getZipCode().compareTo(m2.getLocation().getZipCode())>0){
-                            members[i]=m2;
-                            members[j]=m1;
-                        }
                     }
                 }
             }
