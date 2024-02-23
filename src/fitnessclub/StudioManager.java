@@ -2,7 +2,7 @@ package fitnessclub;
 
 import java.util.Scanner;
 
-public class StudioManager {
+public class StudioManager{
 
     /**
      * creates a member from input
@@ -21,7 +21,7 @@ public class StudioManager {
         int year = Integer.parseInt(date[2]);
         Date expires = new Date(month,day,year);
         Profile profile = new Profile(fname,lname,expires);
-        Member member = new Member(profile,expires,location);
+        return new Member(profile,expires,location);
     }
 
 
@@ -75,6 +75,13 @@ public class StudioManager {
         if(input.equalsIgnoreCase("Afternoon")) {return Time.AFTERNOON;}
         if(input.equalsIgnoreCase("Evening")) {return Time.EVENING;}
         return null;
+    }
+
+    /**
+     * run the project
+     */
+    public static void run(){
+        return;
     }
 }
 
