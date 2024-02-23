@@ -40,10 +40,10 @@ public class Profile implements Comparable<Profile>{
      */
     @Override
     public int compareTo(Profile profile){
-        if (this.fname.compareToIgnoreCase(profile.fname) > 0) {return 1;}
-        if (this.fname.compareToIgnoreCase(profile.fname) < 0) {return -1;}
         if (this.lname.compareToIgnoreCase(profile.lname) > 0) {return 1;}
         if (this.lname.compareToIgnoreCase(profile.lname) < 0) {return -1;}
+        if (this.fname.compareToIgnoreCase(profile.fname) > 0) {return 1;}
+        if (this.fname.compareToIgnoreCase(profile.fname) < 0) {return -1;}
         if(this.dob.compareTo(profile.dob)>0) {return 1;}
         if (this.dob.compareTo(profile.dob) < 0) {return -1;}
         return 0;

@@ -58,23 +58,22 @@ public class MemberList {
      * @return true if added, false otherwise
      */
     public boolean add(Member member){
-        //dont add if nonvalid date
-        //date is today or after
-        //under 18
-        //invalid city member.getLocation()==null
-        //member already in database, use find
-        //not enough data tokens to add
         Date dob = member.getProfile().getDob();
-        boolean added = false;
-        added = dob.isValid();
-        added = dob.over18(dob);
-        added = member.getLocation() != null;
-        added = !members.contains(member);
-        if(added){
-            members[size]=member;
+        if(!dob.isValid()) {return false;}
+        if(contains(member)) {return false;}
+        if(member.getProfile()==null || member.getLocation()==null || member.getExpirationDate()==null){
+            return false;
         }
-        return added;
-    }
+        for(int i=0; i<size; i++){
+            if(members[i]==null){
+                members[i]=member;
+            }
+        }
+        int temp = size;
+        grow();
+        Member[] tempo = members;
+        return true;
+        }
 
     /**
      * removes an element from the array. Shift up to remove
@@ -82,7 +81,13 @@ public class MemberList {
      * @return true if removed, false otherwise
      */
     public boolean remove(Member member){
-        return false;
+        if(find(member)==NOT_FOUND) {return false;}
+        int index = find(member);
+        members[index] = null;
+        for(int i=index+1; i<members.length; i++){
+            members[i-1] = members[i];
+        }
+        return true;
     }
 
     /**
@@ -108,14 +113,37 @@ public class MemberList {
      * sort by county then zipcode
      */
     public void printByCounty(){
-
+        for(int i=0; i<members.length-1; i++){
+            for(int j=i+1; i<members.length; j++){
+                if()
+            }
+        }
     }
 
     /**
-     * sort by member profile
+     * sort by member profile. Last name first, then first name, then dob.
      */
     public void printByMember(){
-
+        for(int i=0; i<members.length-1; i++){
+            for(int j=i+1; j<members.length;j++){
+                Member m1 = members[i];
+                Member m2 = members[j];
+                if(m1.getProfile().getLastName().compareTo(m2.getProfile().getLastName())==1){
+                    members[i]=m2;
+                    members[j]=m1;
+                }else if(m1.getProfile().getLastName().compareTo(m2.getProfile().getLastName())==0){
+                    if(m1.getProfile().getFirstName().compareTo(m2.getProfile().getFirstName())==1){
+                        members[i]=m2;
+                        members[j]=m1;
+                    }else if(m1.getProfile().getFirstName().compareTo(m2.getProfile().getFirstName())==0){
+                        if(m1.getProfile().getDob().compareTo(m2.getProfile().getDob())==1){
+                            members[i]=m2;
+                            members[j]=m1;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**

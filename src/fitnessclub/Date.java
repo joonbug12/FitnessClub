@@ -48,10 +48,9 @@ public class Date implements Comparable<Date>{
      */
     public boolean isValid() {
         boolean tr = true;
-        if(year < 1900)
-            return false;
-        if(todayOrAfter())
-            return false;
+        if(year < 1900) {return false;}
+        if(todayOrAfter()) {return false;}
+        if(!over18()) {return false;}
         if(month < JANUARY || month > DECEMBER)
             tr = false;
         if((month == JANUARY || month == MARCH || month == MAY || month == JULY || month == AUGUST
@@ -90,16 +89,15 @@ public class Date implements Comparable<Date>{
 
     /**
      * helper method to see if the person is over 18 or not
-     * @param date which would be the date of birth
      * @return true if over 18, false otherwise
      */
-    public boolean over18(Date date){
+    public boolean over18(){
         final int validAge=18;
-        if((date.getYear()+validAge)<currYear){return true;}
-        if((date.getYear()+validAge)>currYear){return false;}
-        if((date.getYear()+validAge)==currYear){
-            if(date.getMonth()<currMonth||date.getMonth()==currMonth){return true;}
-            if(date.getMonth()>currMonth){return false;}
+        if((year+validAge)<currYear){return true;}
+        if((year+validAge)>currYear){return false;}
+        if((year+validAge)==currYear){
+            if(month<currMonth||month==currMonth){return true;}
+            if(month>currMonth){return false;}
         }
         return false;
     }
