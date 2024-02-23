@@ -87,6 +87,7 @@ public class MemberList {
         for(int i=index+1; i<members.length; i++){
             members[i-1] = members[i];
         }
+        members[members.length-1]=null;
         return true;
     }
 
@@ -110,13 +111,29 @@ public class MemberList {
     }
 
     /**
-     * sort by county then zipcode
+     * sort by county, city,  then zipcode
      */
     public void printByCounty(){
         for(int i=0; i<members.length-1; i++){
             for(int j=i+1; i<members.length; j++){
-                if()
+                Member m1 = members[i];
+                Member m2 = members[j];
+                if(m1.getLocation().getCounty().compareTo(m2.getLocation().getCounty())>0){
+                    members[i]=m2;
+                    members[j]=m1;
+                }else if(m1.getLocation().getCounty().compareTo(m2.getLocation().getCounty())==0){
+                    if(m1.getLocation().getCity().compareTo(m2.getLocation().getCity())>0){
+                        members[i]=m2;
+                        members[j]=m1;
+                    }else if(m1.getLocation().getCity().compareTo(m2.getLocation().getCity())==0){
+                        if(m1.getLocation().getZipCode().compareTo(m2.getLocation().getZipCode())>0){
+                            members[i]=m2;
+                            members[j]=m1;
+                        }
+                    }
+                }
             }
+            for(Member member:members) {System.out.println(member);}
         }
     }
 
@@ -128,15 +145,15 @@ public class MemberList {
             for(int j=i+1; j<members.length;j++){
                 Member m1 = members[i];
                 Member m2 = members[j];
-                if(m1.getProfile().getLastName().compareTo(m2.getProfile().getLastName())==1){
+                if(m1.getProfile().getLastName().compareTo(m2.getProfile().getLastName())>0){
                     members[i]=m2;
                     members[j]=m1;
                 }else if(m1.getProfile().getLastName().compareTo(m2.getProfile().getLastName())==0){
-                    if(m1.getProfile().getFirstName().compareTo(m2.getProfile().getFirstName())==1){
+                    if(m1.getProfile().getFirstName().compareTo(m2.getProfile().getFirstName())>0){
                         members[i]=m2;
                         members[j]=m1;
                     }else if(m1.getProfile().getFirstName().compareTo(m2.getProfile().getFirstName())==0){
-                        if(m1.getProfile().getDob().compareTo(m2.getProfile().getDob())==1){
+                        if(m1.getProfile().getDob().compareTo(m2.getProfile().getDob())>0){
                             members[i]=m2;
                             members[j]=m1;
                         }
@@ -144,6 +161,7 @@ public class MemberList {
                 }
             }
         }
+        for(Member member:members) {System.out.println(member);}
     }
 
     /**
