@@ -14,7 +14,7 @@ public class FitnessClass{
     /**
      * constructor
      */
-    public FitnessClass(Offer classInfo, Instructor instuctor, Location studio, Time time,
+    public FitnessClass(Offer classInfo, Instructor instructor, Location studio, Time time,
                         MemberList members, MemberList guests){
         this.classInfo=classInfo;
         this.instructor=instructor;
@@ -59,6 +59,15 @@ public class FitnessClass{
      * @return guests
      */
     public MemberList getGuests() {return this.guests;}
+
+    /**
+     * class to string
+     * @return string class
+     */
+    @Override
+    public String toString(){
+
+    }
 
 
 

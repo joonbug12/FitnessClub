@@ -59,7 +59,9 @@ public class MemberList {
      */
     public boolean add(Member member){
         Date dob = member.getProfile().getDob();
+        if(members[0]==null) {return false;}
         if(!dob.isValid()) {return false;}
+        if(!member.getProfile().getDob().over18()) {return false;}
         if(contains(member)) {return false;}
         if(member.getProfile()==null || member.getLocation()==null || member.getExpirationDate()==null){
             return false;
@@ -98,22 +100,43 @@ public class MemberList {
      */
     public void load(File file) throws IOException{
         if(!file.exists() || !file.isFile()) {throw new IOException();}
-
+        System.out.println("-list of members loaded-");
         Scanner scanner = new Scanner(file);
-        while(!scanner.hasNextLine()){
-            int index=0;
+        int index=0;
+        do{
             String line = scanner.nextLine();
-            Member member = StudioManager.createMember(line);
-            members[index]=member;
+            String[] tokens = line.split("\\s");
+            String command = tokens[0];
+            for(int i=0; i<tokens.length-1; i++){
+                tokens[i] = tokens[i+1];
+            }
+            switch(command){
+                case "B" -> {
+                    Basic basic = StudioManager.createBasic(tokens);
+                    members[index]=basic;
+                    System.out.println(basic.toString());
+                }
+                case "F" -> {
+                    Family family = StudioManager.createFamily(tokens);
+                    members[index]=family;
+                    System.out.println(family.toString());
+                }
+                case "P" -> {
+                    Premium premium = StudioManager.createPremium(tokens);
+                    members[index]=premium;
+                    System.out.println(premium.toString());
+                }
+            }
+            System.out.println("-end of list-");
             grow();
             index++;
-        }
+        }while(scanner.hasNextLine());
     }
 
     /**
      * sort by county, then zipcode
      */
-    public void printByCounty(){
+    public void printByLocation(){
         for(int i=0; i<members.length-1; i++){
             for(int j=i+1; j<members.length; j++){
                 Member m1 = members[i];
@@ -165,6 +188,18 @@ public class MemberList {
     public void printFees(){
 
     }
+
+    public static void main(String[] args){
+        MemberList myObject = new MemberList();
+        File file = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/memberList.txt");
+        try {
+            myObject.load(file);
+            System.out.println("File loaded and printed successfully.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while loading the file: " + e.getMessage());
+        }
+    }
+
 
 
 }

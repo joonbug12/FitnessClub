@@ -8,6 +8,16 @@ public class Schedule{
     private FitnessClass[] classes;
     private int numClasses;
 
+    /**
+     * constructor
+     * @param classes classes
+     * @param numClasses number classes in
+     */
+    public Schedule(FitnessClass[] classes, int numClasses) {
+        this.classes = classes;
+        this.numClasses=numClasses;
+    }
+
 
     /**
      * Loads classes from text file
@@ -19,17 +29,35 @@ public class Schedule{
 
         Scanner scanner = new Scanner(file);
         int index = 0;
-        while(scanner.hasNextLine()){
-            Offer offer = StudioManager.getOffer(scanner.next());
-            Instructor instructor = StudioManager.getInstructor(scanner.next());
-            Time time = StudioManager.getTime(scanner.next());
-            Location location = StudioManager.getLocation(scanner.next());
+        do{
+            String line = scanner.nextLine();
+            String[] tokens = line.split("\\s");
+            Offer offer = StudioManager.getOffer(tokens[0]);
+            Instructor instructor = StudioManager.getInstructor(tokens[1]);
+            Time time = StudioManager.getTime(tokens[2]);
+            Location location = StudioManager.getLocation(tokens[3]);
             FitnessClass fitClass = new FitnessClass(offer,instructor,location,time,null,null);
             classes[index]=fitClass;
             index++;
             numClasses++;
-            scanner.nextLine();
+        }while(scanner.hasNextLine());
+
+        for(FitnessClass theClass:classes){
+            if (theClass != null) {
+                System.out.println(theClass);
+            }
         }
 
+    }
+
+    public static void main(String[] args){
+        Schedule myObject = new Schedule(null,0);
+        File file = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/classSchedule.txt");
+        try {
+            myObject.load(file);
+            System.out.println("File loaded and printed successfully.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while loading the file: " + e.getMessage());
+        }
     }
 }

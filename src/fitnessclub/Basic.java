@@ -14,7 +14,25 @@ public class Basic extends Member{
         super(profile, expire, homeStudio);
     }
 
+    /**
+     * bill method for basic member
+     */
+    @Override
+    public double bill(){
+        double amount = 39.99;
+        int exceedFour = 0;
+        if(numClasses>4){
+            exceedFour=numClasses-4;
+        }
+        return amount + (exceedFour*10.00);
+    }
 
-
-
+    /**
+     * Basic to string
+     * @return basic member as a string
+     */
+    @Override
+    public String toString(){
+        return super.toString() + ", (Basic) number of classes attended: " + this.numClasses;
+    }
 }

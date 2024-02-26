@@ -57,6 +57,15 @@ public class Member implements Comparable <Member>{
         return 0;
     }
 
+    /**
+     * member to string
+     * @return String
+     */
+    @Override
+    public String toString(){
+        return this.profile.toString() + ", Membership expired " + this.expire.toString() + ", Home Studio:" +
+                this.homeStudio.getCity() + "," + this.homeStudio.getZipCode() + "," + this.homeStudio.getCounty();
+    }
 
 
     /**

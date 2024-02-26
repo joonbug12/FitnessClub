@@ -49,7 +49,6 @@ public class Date implements Comparable<Date>{
     public boolean isValid() {
         boolean tr = true;
         if(year < 1900) {return false;}
-        if(todayOrAfter()) {return false;}
         if(!over18()) {return false;}
         if(month < JANUARY || month > DECEMBER)
             tr = false;
@@ -76,7 +75,7 @@ public class Date implements Comparable<Date>{
      * helper method to determine if the date is today or after
      * @return true if date is after, false otherwise
      */
-    private boolean todayOrAfter() {
+    public boolean todayOrAfter() {
         if (year < currYear)
             return false;
         if (year==currYear && month < currMonth)
@@ -96,8 +95,7 @@ public class Date implements Comparable<Date>{
         if((year+validAge)<currYear){return true;}
         if((year+validAge)>currYear){return false;}
         if((year+validAge)==currYear){
-            if(month<currMonth||month==currMonth){return true;}
-            if(month>currMonth){return false;}
+            return month < currMonth || month == currMonth;
         }
         return false;
     }

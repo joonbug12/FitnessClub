@@ -1,27 +1,89 @@
 package fitnessclub;
-
 import java.util.Scanner;
+import java.io.File;
 
 public class StudioManager{
 
+    private static MemberList members;
+
     /**
-     * creates a member from input
+     * constructor
+     */
+    public StudioManager(){
+        members = new MemberList();
+    }
+
+
+    /**
+     * creates a basic member from input
      * @param input from input
      */
-    public static Member createMember(String input){
-        Scanner scanner = new Scanner(input);
-        String ignore = scanner.next();
-        String fname = scanner.next();
-        String lname = scanner.next();
-        String expire = scanner.next();
-        Location location = getLocation(scanner.next());
+    public static Basic createBasic(String[] input){;
+        String fname = input[0];
+        String lname = input[1];
+        String dob = input[2];
+        String expire = input[3];
+        Location location = getLocation(input[4]);
+        String[] dateBirth = dob.split("/");
+        int month = Integer.parseInt(dateBirth[0]);
+        int day = Integer.parseInt(dateBirth[1]);
+        int year = Integer.parseInt(dateBirth[2]);
         String[] date = expire.split("/");
-        int month = Integer.parseInt(date[0]);
-        int day = Integer.parseInt(date[1]);
-        int year = Integer.parseInt(date[2]);
-        Date expires = new Date(month,day,year);
-        Profile profile = new Profile(fname,lname,expires);
-        return new Member(profile,expires,location);
+        int month1 = Integer.parseInt(date[0]);
+        int day1 = Integer.parseInt(date[1]);
+        int year1 = Integer.parseInt(date[2]);
+        Date dateOfBirth = new Date(month,day,year);
+        Date expires = new Date(month1,day1,year1);
+        Profile profile = new Profile(fname,lname,dateOfBirth);
+        return new Basic(profile,expires,location);
+    }
+
+    /**
+     * creates a family member from input
+     * @param input from input
+     */
+    public static Family createFamily(String[] input){
+        String fname = input[0];
+        String lname = input[1];
+        String dob = input[2];
+        String expire = input[3];
+        Location location = getLocation(input[4]);
+        String[] dateBirth = dob.split("/");
+        int month = Integer.parseInt(dateBirth[0]);
+        int day = Integer.parseInt(dateBirth[1]);
+        int year = Integer.parseInt(dateBirth[2]);
+        String[] date = expire.split("/");
+        int month1 = Integer.parseInt(date[0]);
+        int day1 = Integer.parseInt(date[1]);
+        int year1 = Integer.parseInt(date[2]);
+        Date dateOfBirth = new Date(month,day,year);
+        Date expires = new Date(month1,day1,year1);
+        Profile profile = new Profile(fname,lname,dateOfBirth);
+        return new Family(profile,expires,location);
+    }
+
+    /**
+     * creates a premium member from input
+     * @param input from input
+     */
+    public static Premium createPremium(String[] input){
+        String fname = input[0];
+        String lname = input[1];
+        String dob = input[2];
+        String expire = input[3];
+        Location location = getLocation(input[4]);
+        String[] dateBirth = dob.split("/");
+        int month = Integer.parseInt(dateBirth[0]);
+        int day = Integer.parseInt(dateBirth[1]);
+        int year = Integer.parseInt(dateBirth[2]);
+        String[] date = expire.split("/");
+        int month1 = Integer.parseInt(date[0]);
+        int day1 = Integer.parseInt(date[1]);
+        int year1 = Integer.parseInt(date[2]);
+        Date dateOfBirth = new Date(month,day,year);
+        Date expires = new Date(month1,day1,year1);
+        Profile profile = new Profile(fname,lname,dateOfBirth);
+        return new Premium(profile,expires,location);
     }
 
 
@@ -78,10 +140,90 @@ public class StudioManager{
     }
 
     /**
+     * Helper method that checks whether a member is valid to add
+     * @param member to be tested if it is valid
+     * @return true if the member has a valid dob, false otherwise
+     */
+    private void invalidInput(Member member) {
+        if(!member.getProfile().getDob().isValid()) {
+            System.out.println("DOB: " + member.getProfile().getDob().toString() + " invalid calendar date!");
+        }
+        if(member.getProfile().getDob().todayOrAfter()) {
+            System.out.println("DOB: " + member.getProfile().getDob().toString() + " cannot be today or a future date!");
+        }
+        if(!member.getProfile().getDob().over18()){
+            System.out.println("DOB: " + member.getProfile().getDob().toString() + " must be 18 or older!");
+        }
+        if(member.getLocation()==null){
+            System.out.println("invalid studio location!");
+        }
+        if(members.contains(member)){
+            System.out.println(member.getProfile().getFirstName() + " " + member.getProfile().getLastName() + " is already in the member database");
+        }
+    }
+
+    /**
+     * helper method to add basic, family, or premium
+     */
+    public void addMember(String[] string){
+        String command = string[0];
+        for(int i=0; i<string.length-1; i++){
+            string[i] = string[i+1];
+        }
+        string[string.length-1]=null;
+
+        if(string.length<4){
+            System.out.println("Missing data tokens");
+            return;
+        }
+
+        switch (command) {
+            case "AB" -> {
+                Basic basic = createBasic(string);
+                boolean result = members.add(basic);
+                if(!result) {invalidInput(basic);}
+            }
+            case "AF" -> {
+                Family family = createFamily(string);
+                boolean result = members.add(family);
+                if(!result) {invalidInput(family);}
+            }
+            case "AP" -> {
+                Premium premium = createPremium(string);
+                boolean result = members.add(premium);
+                if(!result) {invalidInput(premium);}
+            }
+        }
+    }
+
+
+    /**
      * run the project
      */
-    public static void run(){
-        return;
+    public void run (){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("StudioManager is up and running.");
+        do{
+            String line = scanner.nextLine();
+            String[] tokens = line.split("\\s");
+            String command = tokens[0];
+            switch(command){
+                case "AB","AF","AP" -> {addMember(tokens); break;}
+                case "C" -> {/*cancel membership;*/break;}
+                case "S" -> {/*display class schedule with the current attendees;*/break;}
+                case "PM" -> {members.printByMember(); break;}
+                case "PC" -> {members.printByLocation(); break;}
+                case "PF" -> {members.printFees();}
+                case "R" -> {/*take attendance of a member attending a class and add the member to the class*/break;}
+                case "U" -> {/*remove a member from a class*/break;}
+                case "RG" -> {/*take attendance of a guest attending a class and add the guest to the class*/break;}
+                case "UG" -> {/*remove guest from class*/break;}
+                case "Q" -> {break;}
+                default -> System.out.println("Invalid Command!");
+            }
+        }while(scanner.hasNextLine());
+        scanner.close();
+        System.out.println("StudioManager terminated.");
     }
 }
 
