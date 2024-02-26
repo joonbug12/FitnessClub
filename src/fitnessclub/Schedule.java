@@ -27,6 +27,7 @@ public class Schedule{
     public void load(File file) throws IOException {
         if(!file.exists() || !file.isFile()) {throw new IOException();}
 
+        System.out.println("-fitness classes loaded-");
         Scanner scanner = new Scanner(file);
         int index = 0;
         do{
@@ -41,13 +42,14 @@ public class Schedule{
             index++;
             numClasses++;
         }while(scanner.hasNextLine());
+        scanner.close();
 
         for(FitnessClass theClass:classes){
             if (theClass != null) {
-                System.out.println(theClass);
+                System.out.println(theClass.toString());
             }
         }
-
+        System.out.println("-end of class list-");
     }
 
     public static void main(String[] args){

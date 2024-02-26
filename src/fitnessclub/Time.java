@@ -14,4 +14,16 @@ public enum Time{
          this.hour=hour;
          this.minutes=minutes;
      }
+
+    /**
+     * getter method
+     * @return hour
+     */
+    public int getHour() {return this.hour;}
+
+    /**
+     * getter method
+     * @return minute
+     */
+    public int getMinute() {return this.minutes;}
 }

@@ -4,16 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f824ef11-0489-4ef4-bc11-9342d5aa7c5c" name="Changes" comment="New updates">
+    <list default="true" id="f824ef11-0489-4ef4-bc11-9342d5aa7c5c" name="Changes" comment="New updates 2/26">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Basic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Basic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Date.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Date.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Family.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Family.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Member.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fitnessclub/MemberList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/MemberList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Premium.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Premium.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/FitnessClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/FitnessClass.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fitnessclub/Schedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Schedule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fitnessclub/StudioManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/StudioManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fitnessclub/Time.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Time.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -124,12 +118,21 @@
       <option name="project" value="LOCAL" />
       <updated>1708717852731</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="New updates 2/26">
+      <option name="closed" value="true" />
+      <created>1708990122348</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1708990122348</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="New updates" />
-    <option name="LAST_COMMIT_MESSAGE" value="New updates" />
+    <MESSAGE value="New updates 2/26" />
+    <option name="LAST_COMMIT_MESSAGE" value="New updates 2/26" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
