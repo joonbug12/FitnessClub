@@ -67,7 +67,7 @@ public class FitnessClass{
     @Override
     public String toString(){
         return this.classInfo.toString().toUpperCase() + "-" + this.instructor.toString().toUpperCase() + ", " +
-               this.time.getHour() + ":" + this.time.getMinute() + ", " + this.studio.getCity();
+               this.time.getHour() + ":" + this.time.getMinute() + ", " + this.studio.getCity().toUpperCase();
     }
 
 

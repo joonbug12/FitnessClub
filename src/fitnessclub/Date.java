@@ -146,6 +146,51 @@ public class Date implements Comparable<Date>{
     }
 
     /**
+     * setting expiration dates for basic
+     */
+    public Date basicExpire(){
+        int maxDayCurrMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int maxDaysNextMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
+        today.add(Calendar.MONTH, 1);
+        int expMonth = currMonth+1;
+        if(currDayMonth==maxDayCurrMonth){
+            return new Date(expMonth,maxDaysNextMonth,currYear);
+        }else{
+            return new Date(expMonth,currDayMonth,currYear);
+        }
+    }
+
+    /**
+     * setting expiration date for family
+     */
+    public Date familyExpire(){
+        int maxDayCurrMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int maxDaysNextMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
+        today.add(Calendar.MONTH, 3);
+        int expMonth = currMonth+3;
+        if(currDayMonth==maxDayCurrMonth){
+            return new Date(expMonth,maxDaysNextMonth,currYear);
+        }else{
+            return new Date(expMonth,currDayMonth,currYear);
+        }
+    }
+
+    /**
+     * setting expiration date for premium
+     */
+    public Date premiumExpire(){
+        int maxDayCurrMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int maxDaysNextMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
+        today.add(Calendar.MONTH, 12);
+        int expMonth = currMonth;
+        if(currDayMonth==maxDayCurrMonth){
+            return new Date(expMonth,maxDaysNextMonth,currYear);
+        }else{
+            return new Date(expMonth,currDayMonth,currYear);
+        }
+    }
+
+    /**
      * getter method
      * @return day
      */

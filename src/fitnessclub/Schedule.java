@@ -9,6 +9,13 @@ public class Schedule{
     private int numClasses;
 
     /**
+     * default constructor
+     */
+    public Schedule() {
+        int numClasses = 4;
+        classes = new FitnessClass[numClasses];
+    }
+    /**
      * constructor
      * @param classes classes
      * @param numClasses number classes in
@@ -16,6 +23,29 @@ public class Schedule{
     public Schedule(FitnessClass[] classes, int numClasses) {
         this.classes = classes;
         this.numClasses=numClasses;
+    }
+
+    /**
+     * expands the array
+     */
+    private void growArray(){
+        numClasses+=4;
+        FitnessClass[] temp = new FitnessClass[numClasses];
+        for(int i = 0; i < numClasses - 4; i++) {
+            temp[i] = classes[i];
+        }
+        classes = temp;
+    }
+
+    /**
+     * create class
+     */
+    public FitnessClass createClass(String[] string){
+        Offer offer = StudioManager.getOffer(string[0]);
+        Instructor instructor = StudioManager.getInstructor(string[1]);
+        Time time = StudioManager.getTime(string[2]);
+        Location location = StudioManager.getLocation(string[3]);
+        return new FitnessClass(offer,instructor,location,time,null,null);
     }
 
 
@@ -26,40 +56,22 @@ public class Schedule{
      */
     public void load(File file) throws IOException {
         if(!file.exists() || !file.isFile()) {throw new IOException();}
-
         System.out.println("-fitness classes loaded-");
         Scanner scanner = new Scanner(file);
         int index = 0;
         do{
             String line = scanner.nextLine();
             String[] tokens = line.split("\\s");
-            Offer offer = StudioManager.getOffer(tokens[0]);
-            Instructor instructor = StudioManager.getInstructor(tokens[1]);
-            Time time = StudioManager.getTime(tokens[2]);
-            Location location = StudioManager.getLocation(tokens[3]);
-            FitnessClass fitClass = new FitnessClass(offer,instructor,location,time,null,null);
-            classes[index]=fitClass;
-            index++;
-            numClasses++;
+            if(tokens.length>=4){
+                FitnessClass classy=createClass(tokens);
+                classes[index]=classy;
+                System.out.println(classy.toString());
+                index++;
+                growArray();
+            }
         }while(scanner.hasNextLine());
         scanner.close();
-
-        for(FitnessClass theClass:classes){
-            if (theClass != null) {
-                System.out.println(theClass.toString());
-            }
-        }
         System.out.println("-end of class list-");
     }
 
-    public static void main(String[] args){
-        Schedule myObject = new Schedule(null,0);
-        File file = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/classSchedule.txt");
-        try {
-            myObject.load(file);
-            System.out.println("File loaded and printed successfully.");
-        } catch (IOException e) {
-            System.out.println("An error occurred while loading the file: " + e.getMessage());
-        }
-    }
 }

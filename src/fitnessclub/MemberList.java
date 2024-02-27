@@ -69,11 +69,12 @@ public class MemberList {
         for(int i=0; i<size; i++){
             if(members[i]==null){
                 members[i]=member;
+                return true;
             }
         }
         int temp = size;
         grow();
-        Member[] tempo = members;
+        members[temp] = member;
         return true;
         }
 
@@ -93,6 +94,74 @@ public class MemberList {
         return true;
     }
 
+
+    public static Basic makeBasic(String[] input){;
+        String fname = input[0];
+        String lname = input[1];
+        String dob = input[2];
+        String expire = input[3];
+        Location location = getLocation(input[4]);
+        String[] dateBirth = dob.split("/");
+        int month = Integer.parseInt(dateBirth[0]);
+        int day = Integer.parseInt(dateBirth[1]);
+        int year = Integer.parseInt(dateBirth[2]);
+        String[] date = expire.split("/");
+        int month1 = Integer.parseInt(date[0]);
+        int day1 = Integer.parseInt(date[1]);
+        int year1 = Integer.parseInt(date[2]);
+        Date dateOfBirth = new Date(month,day,year);
+        Date expires = new Date(month1,day1,year1);
+        Profile profile = new Profile(fname,lname,dateOfBirth);
+        return new Basic(profile,expires,location);
+    }
+
+    /**
+     * creates a family member from input
+     * @param input from input
+     */
+    public static Family makeFamily(String[] input){
+        String fname = input[0];
+        String lname = input[1];
+        String dob = input[2];
+        String expire = input[3];
+        Location location = getLocation(input[4]);
+        String[] dateBirth = dob.split("/");
+        int month = Integer.parseInt(dateBirth[0]);
+        int day = Integer.parseInt(dateBirth[1]);
+        int year = Integer.parseInt(dateBirth[2]);
+        String[] date = expire.split("/");
+        int month1 = Integer.parseInt(date[0]);
+        int day1 = Integer.parseInt(date[1]);
+        int year1 = Integer.parseInt(date[2]);
+        Date dateOfBirth = new Date(month,day,year);
+        Date expires = new Date(month1,day1,year1);
+        Profile profile = new Profile(fname,lname,dateOfBirth);
+        return new Family(profile,expires,location);
+    }
+
+    /**
+     * creates a premium member from input
+     * @param input from input
+     */
+    public static Premium makePremium(String[] input){
+        String fname = input[0];
+        String lname = input[1];
+        String dob = input[2];
+        String expire = input[3];
+        Location location = getLocation(input[4]);
+        String[] dateBirth = dob.split("/");
+        int month = Integer.parseInt(dateBirth[0]);
+        int day = Integer.parseInt(dateBirth[1]);
+        int year = Integer.parseInt(dateBirth[2]);
+        String[] date = expire.split("/");
+        int month1 = Integer.parseInt(date[0]);
+        int day1 = Integer.parseInt(date[1]);
+        int year1 = Integer.parseInt(date[2]);
+        Date dateOfBirth = new Date(month,day,year);
+        Date expires = new Date(month1,day1,year1);
+        Profile profile = new Profile(fname,lname,dateOfBirth);
+        return new Premium(profile,expires,location);
+    }
     /**
      * Loads the list of members from text file
      * @param file to be loaded
@@ -127,10 +196,10 @@ public class MemberList {
                     System.out.println(premium.toString());
                 }
             }
-            System.out.println("-end of list-");
             grow();
             index++;
         }while(scanner.hasNextLine());
+        System.out.println("-end of list-");
     }
 
     /**

@@ -1,4 +1,5 @@
 package fitnessclub;
+import java.io.IOException;
 import java.util.Scanner;
 import java.io.File;
 
@@ -70,18 +71,13 @@ public class StudioManager{
         String fname = input[0];
         String lname = input[1];
         String dob = input[2];
-        String expire = input[3];
-        Location location = getLocation(input[4]);
+        Location location = getLocation(input[3]);
         String[] dateBirth = dob.split("/");
         int month = Integer.parseInt(dateBirth[0]);
         int day = Integer.parseInt(dateBirth[1]);
         int year = Integer.parseInt(dateBirth[2]);
-        String[] date = expire.split("/");
-        int month1 = Integer.parseInt(date[0]);
-        int day1 = Integer.parseInt(date[1]);
-        int year1 = Integer.parseInt(date[2]);
         Date dateOfBirth = new Date(month,day,year);
-        Date expires = new Date(month1,day1,year1);
+        
         Profile profile = new Profile(fname,lname,dateOfBirth);
         return new Premium(profile,expires,location);
     }
@@ -160,6 +156,14 @@ public class StudioManager{
         if(members.contains(member)){
             System.out.println(member.getProfile().getFirstName() + " " + member.getProfile().getLastName() + " is already in the member database");
         }
+        String date = member.getProfile().getDob().toString();
+        for(int i=0; i<date.length(); i++){
+            if(!Character.isDigit(date.charAt(i)) && date.charAt(i) != '/'){
+                return;
+            }else{
+                System.out.println("This date contains characters");
+            }
+        }
     }
 
     /**
@@ -170,56 +174,73 @@ public class StudioManager{
         for(int i=0; i<string.length-1; i++){
             string[i] = string[i+1];
         }
-        string[string.length-1]=null;
 
         if(string.length<4){
             System.out.println("Missing data tokens");
             return;
         }
 
-        switch (command) {
+        switch(command){
             case "AB" -> {
                 Basic basic = createBasic(string);
                 boolean result = members.add(basic);
-                if(!result) {invalidInput(basic);}
+                if (!result) {invalidInput(basic);}
+                else {System.out.println(string[0] + " " + string[1] + " added");}
             }
             case "AF" -> {
                 Family family = createFamily(string);
                 boolean result = members.add(family);
-                if(!result) {invalidInput(family);}
+                if (!result) {invalidInput(family);}
+                else {System.out.println(string[0] + " " + string[1] + " added");}
             }
             case "AP" -> {
                 Premium premium = createPremium(string);
                 boolean result = members.add(premium);
-                if(!result) {invalidInput(premium);}
+                if (!result) {invalidInput(premium);}
+                else {System.out.println(string[0] + " " + string[1] + " added");}
             }
         }
     }
+    /**
+     * Print members and classes
+     */
+    public void printMAndC(){
 
+        MemberList myObject = new MemberList();
+        File file = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/memberList.txt");
+        try {myObject.load(file);}
+        catch (IOException e) {}
+
+        Schedule myObject1 = new Schedule();
+        File file1 = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/classSchedule.txt");
+        try {myObject1.load(file1);}
+        catch (IOException e){}
+    }
 
     /**
      * run the project
      */
     public void run (){
+        printMAndC();
         Scanner scanner = new Scanner(System.in);
         System.out.println("StudioManager is up and running.");
-        do{
+        outerLoop: do{
             String line = scanner.nextLine();
             String[] tokens = line.split("\\s");
             String command = tokens[0];
             switch(command){
-                case "AB","AF","AP" -> {addMember(tokens); break;}
+                case "AB","AF","AP" -> addMember(tokens);
                 case "C" -> {/*cancel membership;*/break;}
-                case "S" -> {/*display class schedule with the current attendees;*/break;}
-                case "PM" -> {members.printByMember(); break;}
-                case "PC" -> {members.printByLocation(); break;}
+                case "S" -> {/*display class schedule with the current attendees;*/}
+                case "PM" -> {members.printByMember();}
+                case "PC" -> {members.printByLocation();}
                 case "PF" -> {members.printFees();}
-                case "R" -> {/*take attendance of a member attending a class and add the member to the class*/break;}
-                case "U" -> {/*remove a member from a class*/break;}
-                case "RG" -> {/*take attendance of a guest attending a class and add the guest to the class*/break;}
-                case "UG" -> {/*remove guest from class*/break;}
-                case "Q" -> {break;}
-                default -> System.out.println("Invalid Command!");
+                case "R" -> {/*take attendance of a member attending a class and add the member to the class*/}
+                case "U" -> {/*remove a member from a class*/}
+                case "RG" -> {/*take attendance of a guest attending a class and add the guest to the class*/}
+                case "UG" -> {/*remove guest from class*/}
+                case "Q" -> {break outerLoop;}
+                default -> System.out.println(command + " is an Invalid Command!");
             }
         }while(scanner.hasNextLine());
         scanner.close();
