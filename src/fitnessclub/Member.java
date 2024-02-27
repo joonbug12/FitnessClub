@@ -40,8 +40,7 @@ public class Member implements Comparable <Member>{
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Member member) {
-            return this.profile.equals(member.profile) && this.expire.equals(member.expire)
-                    &&this.homeStudio.equals(member.homeStudio);
+            return this.profile.equals(member.profile);
         }
         return false;
     }
