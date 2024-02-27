@@ -158,10 +158,9 @@ public class StudioManager{
         }
         String date = member.getProfile().getDob().toString();
         for(int i=0; i<date.length(); i++){
-            if(!Character.isDigit(date.charAt(i)) && date.charAt(i) != '/'){
-                return;
-            }else{
+            if(!Character.isDigit(date.charAt(i)) && date.charAt(i) != '/') {
                 System.out.println("This date contains characters");
+                return;
             }
         }
     }
