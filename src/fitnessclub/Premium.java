@@ -13,6 +13,7 @@ public class Premium extends Member{
      */
     public Premium(Profile profile, Date expire, Location homeStudio) {
         super(profile, expire, homeStudio);
+        guestPass = 3;
     }
 
     /**
@@ -22,6 +23,14 @@ public class Premium extends Member{
         return 59.99 * 11; /*every year with one month free*/
     }
 
+    public int getGuestPass() {
+        return guestPass;
+    }
+
+    public void setGuestPass(int guestPass) {
+        this.guestPass = guestPass;
+    }
+    
     /**
      * Premium to String
      */
