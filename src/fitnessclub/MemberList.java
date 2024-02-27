@@ -254,8 +254,10 @@ public class MemberList {
     /**
      * print the array as is with the next due amounts
      */
-    public void printFees(){
-
+    public void printFees() {
+        for (Member member : members) {
+            System.out.println(member + " [next due: $" + member.bill() + "]");
+        }
     }
 
     public static void main(String[] args){
@@ -268,8 +270,5 @@ public class MemberList {
             System.out.println("An error occurred while loading the file: " + e.getMessage());
         }
     }
-
-
-
 }
 
