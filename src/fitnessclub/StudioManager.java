@@ -201,6 +201,7 @@ public class StudioManager{
             }
         }
     }
+    
     /**
      * Print members and classes
      */
@@ -216,7 +217,37 @@ public class StudioManager{
         try {myObject1.load(file1);}
         catch (IOException e){}
     }
-
+     /**
+     * Removes specified member from the database. Sends message if unsuccessful
+     * @param inputs that are used to create the member to remove
+     */
+    public void removeMembership(String [] inputs) {
+        if(inputs.length < 4) {
+            System.out.println("Missing data tokens.");
+            return;
+        }
+        String first = inputs[1];
+        String second = inputs[2];
+        String dob = inputs [3];
+        for(int i = 0; i < dob.length(); i++) {
+            if (!Character.isDigit(dob.charAt(i)) && dob.charAt(i) != '/') {
+                System.out.println("The date contains characters.");
+                return;
+            }
+        }
+        String [] dateBirth = dob.split("/");
+        int month = Integer.parseInt(dateBirth[0]);
+        int day = Integer.parseInt(dateBirth[1]);
+        int year = Integer.parseInt(dateBirth[2]);
+        Date date = new Date(month,day,year);
+        Profile profile = new Profile(first,second,date);
+        Member member = new Member(profile, null, null);
+        boolean result = members.remove(member);
+        if(!result)
+            System.out.println(first + " " + second + " is not in the member database.");
+        else
+            System.out.println(first + " " + second + " removed.");
+    }
     /**
      * run the project
      */
@@ -230,7 +261,7 @@ public class StudioManager{
             String command = tokens[0];
             switch(command){
                 case "AB","AF","AP" -> addMember(tokens);
-                case "C" -> {/*cancel membership;*/break;}
+                case "C" -> {removeMembership(tokens);}
                 case "S" -> {/*display class schedule with the current attendees;*/}
                 case "PM" -> {members.printByMember();}
                 case "PC" -> {members.printByLocation();}
