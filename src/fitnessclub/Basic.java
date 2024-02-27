@@ -28,8 +28,12 @@ public class Basic extends Member{
         return amount + (exceedFour*10.00);
     }
 
-    public void addClass() {
-        numClasses += 1;
+    public int getNumClasses() {
+        return numClasses;
+    }
+
+    public void setNumClasses(int numClasses) {
+        this.numClasses = numClasses;
     }
 
     /**
