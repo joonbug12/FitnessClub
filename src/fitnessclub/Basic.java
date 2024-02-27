@@ -12,6 +12,7 @@ public class Basic extends Member{
      */
     public Basic(Profile profile, Date expire, Location homeStudio) {
         super(profile, expire, homeStudio);
+        int numClasses = 0;
     }
 
     /**
@@ -25,6 +26,10 @@ public class Basic extends Member{
             exceedFour=numClasses-4;
         }
         return amount + (exceedFour*10.00);
+    }
+
+    public void addClass() {
+        numClasses += 1;
     }
 
     /**
