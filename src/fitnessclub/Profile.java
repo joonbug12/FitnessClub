@@ -56,11 +56,13 @@ public class Profile implements Comparable<Profile>{
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Profile profile) {
+        if (obj instanceof Profile) {
+            Profile profile = (Profile) obj;
             return this.compareTo(profile) == 0;
         }
         return false;
     }
+
 
     /**
      * Profile to string
