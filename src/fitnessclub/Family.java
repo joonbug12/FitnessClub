@@ -27,13 +27,6 @@ public class Family extends Member{
         return 49.99 * 3; //every 3 months
     }
 
-    public boolean isGuest() {
-        return guest;
-    }
-
-    public void setGuest(boolean guest) {
-        this.guest = guest;
-    }
 
     /**
      * checks if person is guest
