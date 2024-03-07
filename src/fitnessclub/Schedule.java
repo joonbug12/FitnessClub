@@ -24,7 +24,7 @@ public class Schedule{
      */
     private void growArray(){
         FitnessClass[] temp = new FitnessClass[classes.length+4];
-        for(int i = 0; i < classes.length - 4; i++) {
+        for(int i = 0; i < numClasses; i++) {
             temp[i] = classes[i];
         }
         classes = temp;
@@ -40,9 +40,10 @@ public class Schedule{
         Location location = StudioManager.getLocation(tokens[3]);
         FitnessClass theClass = new FitnessClass(offer,instructor,location,time,new MemberList(), new MemberList());
         classes[index] = theClass;
-        System.out.println(classes[index]);
-        growArray();
+        //System.out.println(classes[index]);
         numClasses++;
+        if(numClasses == classes.length)
+            growArray();
     }
 
     /**
@@ -77,11 +78,11 @@ public class Schedule{
     }
 
 
-     public void printSchedule(){
+    public void printSchedule(){
         for(int i=0; i<numClasses;i++){
-            System.out.println(classes[i].toString());
+            System.out.println(classes[i]);
         }
-     }
+    }
 
 
 
