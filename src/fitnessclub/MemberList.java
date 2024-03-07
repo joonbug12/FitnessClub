@@ -139,7 +139,6 @@ public class MemberList {
         }
         grow();
         size++;
-
     }
     /**
      * Loads the list of members from text file
@@ -147,12 +146,11 @@ public class MemberList {
      * @throws IOException error
      */
     public void load(File file) throws IOException{
-        MemberList memberList = new MemberList();
         if(!file.exists() || !file.isFile()) {throw new IOException();}
         System.out.println("-list of members loaded-");
         Scanner scanner = new Scanner(file);
         int index=0;
-        if(memberList.size==0) {grow();}
+        if(size==members.length) {grow();}
         do{
             String line = scanner.nextLine();
             String[] tokens = line.split("\\s");
@@ -167,32 +165,31 @@ public class MemberList {
      * sort by county, then zipcode
      */
     public void printByLocation(){
-        Member[] members1 = members;
-        if(members1.length==0){
+        if(members.length==0){
             System.out.println("Member database is empty");
         }
         if(size==1){
-            System.out.println(members1[0]);
+            System.out.println(members[0]);
             return;
         }
-        int n=members1.length;
+        int n=size;
         for (int i = 0; i < n - 1; i++) {
             for (int j = i + 1; j < n - i - 1; j++) {
-                Member m1 = members1[i];
-                Member m2 = members1[j];
+                Member m1 = members[i];
+                Member m2 = members[j];
                 if (m1.getLocation().getCounty().compareTo(m2.getLocation().getCounty()) > 0) {
-                    members1[i] = m2;
-                    members1[j] = m1;
+                    members[i] = m2;
+                    members[j] = m1;
                 } else if (m1.getLocation().getCounty().compareTo(m2.getLocation().getCounty()) == 0) {
                     if (m1.getLocation().getZipCode().compareTo(m2.getLocation().getZipCode()) > 0) {
-                        members1[i] = m2;
-                        members1[j] = m1;
+                        members[i] = m2;
+                        members[j] = m1;
                     }
                 }
             }
         }
-        for (int i = 0; i < members1.length-1; i++) {
-            System.out.println(members1[i].toString());
+        for (int i = 0; i < size; i++) {
+            System.out.println(members[i].toString());
         }
     }
 
@@ -201,38 +198,37 @@ public class MemberList {
      * sort by member profile. Last name first, then first name, then dob.
      */
     public void printByMembers(){
-        Member[] members1 = members;
         if(size==0){
             System.out.println("Member database is empty");
             return;
         }
         if(size==1){
-            System.out.println(members1[0]);
+            System.out.println(members[0]);
             return;
         }
-        int n = members1.length;
+        int n = size;
         for (int i = 0; i < n -1 ; i++) {
             for (int j = i + 1; j < n - i - 1; j++) {
-                Member m1 = members1[i];
-                Member m2 = members1[j];
+                Member m1 = members[i];
+                Member m2 = members[j];
                 if (m1.getProfile().getLastName().compareTo(m2.getProfile().getLastName()) > 0) {
-                    members1[i] = m2;
-                    members1[j] = m1;
+                    members[i] = m2;
+                    members[j] = m1;
                 }else if (m1.getProfile().getLastName().compareTo(m2.getProfile().getLastName()) == 0) {
                     if (m1.getProfile().getFirstName().compareTo(m2.getProfile().getFirstName()) > 0) {
-                        members1[i] = m2;
-                        members1[j] = m1;
+                        members[i] = m2;
+                        members[j] = m1;
                     }else if (m1.getProfile().getFirstName().compareTo(m2.getProfile().getFirstName()) == 0) {
                         if (m1.getProfile().getDob().compareTo(m2.getProfile().getDob()) > 0) {
-                            members1[i] = m2;
-                            members1[j] = m1;
+                            members[i] = m2;
+                            members[j] = m1;
                         }
                     }
                 }
             }
         }
-        for (int i = 0; i < members1.length-1; i++) {
-            System.out.println(members1[i].toString());
+        for (int i = 0; i < size; i++) {
+            System.out.println(members[i].toString());
         }
     }
 
@@ -241,8 +237,8 @@ public class MemberList {
      * print the array as is with the next due amounts
      */
     public void printFees(){
-        for (Member member : members) {
-            System.out.println(member + " [next due: $" + member.bill() + "]");
+        for (int i=0; i<size; i++) {
+            System.out.println(members[i] + " [next due: $" + members[i].bill() + "]");
         }
     }
 

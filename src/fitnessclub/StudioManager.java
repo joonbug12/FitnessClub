@@ -10,12 +10,14 @@ import java.io.File;
 public class StudioManager{
 
     private MemberList members;
+    private Schedule classes;
 
     /**
-     * Initialize members
+     * Initialize members and schedule
      */
     public StudioManager() {
         members = new MemberList();
+        classes = new Schedule();
     }
 
 
@@ -201,34 +203,29 @@ public class StudioManager{
      * Print members and classes
      */
     public void printMAndC(){
-        MemberList myObject = new MemberList();
         File file = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/memberList.txt");
-        try {myObject.load(file);}
+        try {members.load(file);}
         catch (IOException e) {}
 
-        Schedule myObject1 = new Schedule();
         File file1 = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/classSchedule.txt");
-        try {myObject1.load(file1);}
+        try {classes.load(file1);}
         catch (IOException e){}
     }
 
-    /**
-     * helper method to print schedule
-     */
-    public void printTheSchedule() {
-    }
 
     /**
      * helper method for R
      */
     public void commandR(String[] input){
-        if(input.length<7){
-            System.out.println("missing data tokens");
-            return;
-        }
+        if(input.length<7){System.out.println("missing data tokens");return;}
         Offer typeClass = getOffer(input[1]);
+        if(typeClass==null){System.out.println("Class doesn't exist"); return;}
         Instructor instructor = getInstructor(input[2]);
+        if(instructor==null){System.out.println("instructor doesn't exist"); return;}
         Location city = getLocation(input[3]);
+        if(city==null){
+            System.out.println("Location doesn't exist"); return;
+        }
         String fname = input[4];
         String lname = input[5];
         String dob = input[6];
@@ -239,20 +236,10 @@ public class StudioManager{
         Date date = new Date(month,day,year);
         Profile profile = new Profile(fname,lname,date);
         Member member = new Member(profile,date,city);
-        if(typeClass==null){
-            System.out.println("Class doesn't exist"); return;
-        }
-        if(city==null){
-            System.out.println("Location doesn't exist"); return;
-        }
         if(!members.contains(member)){
             System.out.println("member isn't in the database"); return;
         }
-        if(instructor==null){
-            System.out.println("instructor doesn't exist"); return;
-        }
-        Schedule schedule = new Schedule();
-        FitnessClass[] classes = schedule.getFitnessClasses();
+
     }
 
 
@@ -271,7 +258,7 @@ public class StudioManager{
             switch(command){
                 case "AB","AF","AP" -> addMember(tokens);
                 case "C" -> removeMember(tokens);
-                case "S" -> {}
+                case "S" -> classes.printSchedule();
                 case "PM" -> members.printByMembers();
                 case "PC" -> members.printByLocation();
                 case "PF" -> members.printFees();

@@ -15,26 +15,16 @@ public class Schedule{
      * default constructor
      */
     public Schedule() {
-        int numClasses = 4;
-        classes = new FitnessClass[numClasses];
-    }
-    /**
-     * constructor
-     * @param classes classes
-     * @param numClasses number classes in
-     */
-    public Schedule(FitnessClass[] classes, int numClasses) {
-        this.classes = classes;
-        this.numClasses=numClasses;
+        classes = new FitnessClass[4];
+        numClasses=0;
     }
 
     /**
      * expands the array
      */
     private void growArray(){
-        numClasses+=4;
-        FitnessClass[] temp = new FitnessClass[numClasses];
-        for(int i = 0; i < numClasses - 4; i++) {
+        FitnessClass[] temp = new FitnessClass[classes.length+4];
+        for(int i = 0; i < classes.length - 4; i++) {
             temp[i] = classes[i];
         }
         classes = temp;
@@ -43,12 +33,16 @@ public class Schedule{
     /**
      * create class
      */
-    public FitnessClass createClass(String[] string){
-        Offer offer = StudioManager.getOffer(string[0]);
-        Instructor instructor = StudioManager.getInstructor(string[1]);
-        Time time = StudioManager.getTime(string[2]);
-        Location location = StudioManager.getLocation(string[3]);
-        return new FitnessClass(offer,instructor,location,time,null,null);
+    public void addClass(String[] tokens, int index){
+        Offer offer = StudioManager.getOffer(tokens[0]);
+        Instructor instructor = StudioManager.getInstructor(tokens[1]);
+        Time time = StudioManager.getTime(tokens[2]);
+        Location location = StudioManager.getLocation(tokens[3]);
+        FitnessClass theClass = new FitnessClass(offer,instructor,location,time,new MemberList(), new MemberList());
+        classes[index] = theClass;
+        System.out.println(classes[index]);
+        growArray();
+        numClasses++;
     }
 
     /**
@@ -68,28 +62,27 @@ public class Schedule{
         System.out.println("-fitness classes loaded-");
         Scanner scanner = new Scanner(file);
         int index = 0;
+        if(numClasses==classes.length) {growArray();}
         do{
             String line = scanner.nextLine();
             String[] tokens = line.split("\\s");
             if(tokens.length>=4){
-                FitnessClass classy=createClass(tokens);
-                classes[index]=classy;
-                System.out.println(classy.toString());
-                index++;
-                growArray();
+                addClass(tokens, index);
             }
+            index++;
         }while(scanner.hasNextLine());
+        printSchedule();
         scanner.close();
         System.out.println("-end of class list-");
     }
 
-    public void printSchedule(){
-        for (FitnessClass aClass : classes) {
-            System.out.println(aClass.toString());
-            if (aClass.getMembers() != null) {
-                MemberList members = aClass.getMembers();
-            }
+
+     public void printSchedule(){
+        for(int i=0; i<numClasses;i++){
+            System.out.println(classes[i].toString());
         }
-    }
+     }
+
+
 
 }
