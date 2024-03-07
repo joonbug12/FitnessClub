@@ -1,7 +1,8 @@
 package fitnessclub;
 
 /**
- * class
+ * includes offer, instructor, location, time, members, and guests in a class
+ * @author Joon Song, Connor Powell
  */
 public class FitnessClass{
     private Offer classInfo;
@@ -42,6 +43,14 @@ public class FitnessClass{
      */
     public Location getStudio() {return this.studio;}
 
+
+    /**
+     * add method
+     */
+    public void addPerson(Member member){
+        members.add(member);
+    }
+
     /**
      * getter method
      * @return time
@@ -69,14 +78,6 @@ public class FitnessClass{
         return this.classInfo.toString().toUpperCase() + "-" + this.instructor.toString().toUpperCase() + ", " +
                this.time.getHour() + ":" + this.time.getMinute() + ", " + this.studio.getCity().toUpperCase();
     }
-
-
-
-
-
-
-
-
 
 }
 

@@ -1,5 +1,9 @@
 package fitnessclub;
 
+/**
+ * extends member class and includes instance variable guest to check if family member has guest
+ * @author Joon Song, Connor Powell
+ */
 public class Family extends Member{
     private boolean guest;
 
@@ -7,9 +11,9 @@ public class Family extends Member{
     /**
      * constructor
      *
-     * @param profile
-     * @param expire
-     * @param homeStudio
+     * @param profile profile
+     * @param expire expire date
+     * @param homeStudio location
      */
     public Family(Profile profile, Date expire, Location homeStudio) {
         super(profile, expire, homeStudio);
@@ -27,6 +31,22 @@ public class Family extends Member{
         return guest;
     }
 
+    public void setGuest(boolean guest) {
+        this.guest = guest;
+    }
+
+    /**
+     * checks if person is guest
+     * @return true if guest, false otherwise
+     */
+    public boolean isGuest() {
+        return guest;
+    }
+
+    /**
+     * setter method
+     * @param guest guest
+     */
     public void setGuest(boolean guest) {
         this.guest = guest;
     }

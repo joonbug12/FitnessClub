@@ -3,85 +3,121 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.io.File;
 
+/**
+ * class used to run the project
+ * @author Joon Song, Connor Powell
+ */
 public class StudioManager{
 
-    private static MemberList members;
+    private MemberList members;
 
     /**
-     * constructor
+     * Initialize members
      */
-    public StudioManager(){
+    public StudioManager() {
         members = new MemberList();
     }
 
 
     /**
-     * creates a basic member from input
-     * @param input from input
+     * gets type of member
+     *
      */
-    public static Basic createBasic(String[] input){;
-        String fname = input[0];
-        String lname = input[1];
-        String dob = input[2];
-        String expire = input[3];
-        Location location = getLocation(input[4]);
-        String[] dateBirth = dob.split("/");
-        int month = Integer.parseInt(dateBirth[0]);
-        int day = Integer.parseInt(dateBirth[1]);
-        int year = Integer.parseInt(dateBirth[2]);
-        String[] date = expire.split("/");
-        int month1 = Integer.parseInt(date[0]);
-        int day1 = Integer.parseInt(date[1]);
-        int year1 = Integer.parseInt(date[2]);
-        Date dateOfBirth = new Date(month,day,year);
-        Date expires = new Date(month1,day1,year1);
-        Profile profile = new Profile(fname,lname,dateOfBirth);
-        return new Basic(profile,expires,location);
+    private Member getMembership(String membership, Profile profile, Location location){
+        Member member;
+        switch (membership) {
+            case "AB":
+                Date expire = Date.basicExpire();
+                member = new Basic(profile, expire, location);
+                break;
+            case "AF":
+                Date expire2 = Date.familyExpire();
+                member = new Family(profile, expire2,location);
+                break;
+            case "AP":
+                Date expire3 = Date.premiumExpire();
+                member = new Premium(profile, expire3, location);
+                break;
+            default:
+                System.out.println("Invalid membership type");
+                return null;
+        }
+        return member;
     }
 
     /**
      * creates a family member from input
      * @param input from input
      */
-    public static Family createFamily(String[] input){
-        String fname = input[0];
-        String lname = input[1];
-        String dob = input[2];
-        String expire = input[3];
+    public void addMember(String[] input){
+        if(input.length<5){
+            System.out.println("not enough data tokens");
+            return;
+        }
+        String membership = input[0];
+        String fname = input[1];
+        String lname = input[2];
+        String dob = input[3];
         Location location = getLocation(input[4]);
+        if(location==null){
+            System.out.println(input[4] + " invalid location");
+            return;
+        }
         String[] dateBirth = dob.split("/");
-        int month = Integer.parseInt(dateBirth[0]);
-        int day = Integer.parseInt(dateBirth[1]);
-        int year = Integer.parseInt(dateBirth[2]);
-        String[] date = expire.split("/");
-        int month1 = Integer.parseInt(date[0]);
-        int day1 = Integer.parseInt(date[1]);
-        int year1 = Integer.parseInt(date[2]);
+        int month, day, year;
+        try {
+            month = Integer.parseInt(dateBirth[0]);
+            day = Integer.parseInt(dateBirth[1]);
+            year = Integer.parseInt(dateBirth[2]);
+        } catch (NumberFormatException e) {
+            System.out.println(dob + " Contains characters");
+            return;
+        }
         Date dateOfBirth = new Date(month,day,year);
-        Date expires = new Date(month1,day1,year1);
         Profile profile = new Profile(fname,lname,dateOfBirth);
-        return new Family(profile,expires,location);
+        Member member = getMembership(membership,profile,location);
+        if(member==null) return;
+        boolean result = members.add(member);
+        if(!result) {
+            invalidAddInput(member);
+        }
+        else{
+            System.out.println(fname + " " + lname + " has been added");
+        }
     }
 
     /**
-     * creates a premium member from input
+     * creates a basic member from input
      * @param input from input
      */
-    public static Premium createPremium(String[] input){
-        String fname = input[0];
-        String lname = input[1];
-        String dob = input[2];
-        Location location = getLocation(input[3]);
+    public void removeMember(String[] input){
+        if(input.length<4){
+            System.out.println("not enough data tokens");
+            return;
+        }
+        String fname = input[1];
+        String lname = input[2];
+        String dob = input[3];
         String[] dateBirth = dob.split("/");
-        int month = Integer.parseInt(dateBirth[0]);
-        int day = Integer.parseInt(dateBirth[1]);
-        int year = Integer.parseInt(dateBirth[2]);
+        int month, day, year;
+        try {
+            month = Integer.parseInt(dateBirth[0]);
+            day = Integer.parseInt(dateBirth[1]);
+            year = Integer.parseInt(dateBirth[2]);
+        } catch (NumberFormatException e) {
+            System.out.println(dob + " Contains characters");
+            return;
+        }
         Date dateOfBirth = new Date(month,day,year);
-        
-        Profile profile = new Profile(fname,lname,dateOfBirth);
-        return new Premium(profile,expires,location);
+        Profile profile = new Profile(fname, lname, dateOfBirth);
+        Member member = new Member(profile, null, null);
+        boolean result = members.remove(member);
+        if(!result){
+            System.out.println(fname + " " + lname + " is not in the database");
+        }else{
+            System.out.println(fname +" "+lname + " removed from database");
+        }
     }
-
 
     /**
      * input the location as a string and turns it into Location from enum class
@@ -89,11 +125,11 @@ public class StudioManager{
      * @return Location
      */
     public static Location getLocation(String input){
-        if(input.equalsIgnoreCase("Bridgewater")) {return Location.Bridgewater;}
-        if(input.equalsIgnoreCase("Edison")) {return Location.Edison;}
-        if(input.equalsIgnoreCase("Franklin")) {return Location.Franklin;}
-        if(input.equalsIgnoreCase("Piscataway")) {return Location.Piscataway;}
-        if(input.equalsIgnoreCase("Somerville")) {return Location.Somerville;}
+        if(input.equalsIgnoreCase("BRIDGEWATER")) {return Location.Bridgewater;}
+        if(input.equalsIgnoreCase("EDISON")) {return Location.Edison;}
+        if(input.equalsIgnoreCase("FRANKLIN")) {return Location.Franklin;}
+        if(input.equalsIgnoreCase("PISCATAWAY")) {return Location.Piscataway;}
+        if(input.equalsIgnoreCase("SOMERVILLE")) {return Location.Somerville;}
         return null;
     }
 
@@ -138,74 +174,33 @@ public class StudioManager{
     /**
      * Helper method that checks whether a member is valid to add
      * @param member to be tested if it is valid
-     * @return true if the member has a valid dob, false otherwise
      */
-    private void invalidInput(Member member) {
-        if(!member.getProfile().getDob().isValid()) {
-            System.out.println("DOB: " + member.getProfile().getDob().toString() + " invalid calendar date!");
-        }
+    private void invalidAddInput(Member member) {
         if(member.getProfile().getDob().todayOrAfter()) {
             System.out.println("DOB: " + member.getProfile().getDob().toString() + " cannot be today or a future date!");
+            return;
+        }
+        if(!member.getProfile().getDob().isValid()) {
+            System.out.println("DOB: " + member.getProfile().getDob().toString() + " invalid calendar date!");
+            return;
         }
         if(!member.getProfile().getDob().over18()){
             System.out.println("DOB: " + member.getProfile().getDob().toString() + " must be 18 or older!");
+            return;
         }
         if(member.getLocation()==null){
-            System.out.println("invalid studio location!");
+            System.out.println(member.getLocation() + " invalid studio location!");
+            return;
         }
         if(members.contains(member)){
             System.out.println(member.getProfile().getFirstName() + " " + member.getProfile().getLastName() + " is already in the member database");
         }
-        String date = member.getProfile().getDob().toString();
-        for(int i=0; i<date.length(); i++){
-            if(!Character.isDigit(date.charAt(i)) && date.charAt(i) != '/') {
-                System.out.println("This date contains characters");
-                return;
-            }
-        }
     }
 
-    /**
-     * helper method to add basic, family, or premium
-     */
-    public void addMember(String[] string){
-        String command = string[0];
-        for(int i=0; i<string.length-1; i++){
-            string[i] = string[i+1];
-        }
-
-        if(string.length<4){
-            System.out.println("Missing data tokens");
-            return;
-        }
-
-        switch(command){
-            case "AB" -> {
-                Basic basic = createBasic(string);
-                boolean result = members.add(basic);
-                if (!result) {invalidInput(basic);}
-                else {System.out.println(string[0] + " " + string[1] + " added");}
-            }
-            case "AF" -> {
-                Family family = createFamily(string);
-                boolean result = members.add(family);
-                if (!result) {invalidInput(family);}
-                else {System.out.println(string[0] + " " + string[1] + " added");}
-            }
-            case "AP" -> {
-                Premium premium = createPremium(string);
-                boolean result = members.add(premium);
-                if (!result) {invalidInput(premium);}
-                else {System.out.println(string[0] + " " + string[1] + " added");}
-            }
-        }
-    }
-    
     /**
      * Print members and classes
      */
     public void printMAndC(){
-
         MemberList myObject = new MemberList();
         File file = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/memberList.txt");
         try {myObject.load(file);}
@@ -216,37 +211,52 @@ public class StudioManager{
         try {myObject1.load(file1);}
         catch (IOException e){}
     }
-     /**
-     * Removes specified member from the database. Sends message if unsuccessful
-     * @param inputs that are used to create the member to remove
+
+    /**
+     * helper method to print schedule
      */
-    public void removeMembership(String [] inputs) {
-        if(inputs.length < 4) {
-            System.out.println("Missing data tokens.");
+    public void printTheSchedule() {
+    }
+
+    /**
+     * helper method for R
+     */
+    public void commandR(String[] input){
+        if(input.length<7){
+            System.out.println("missing data tokens");
             return;
         }
-        String first = inputs[1];
-        String second = inputs[2];
-        String dob = inputs [3];
-        for(int i = 0; i < dob.length(); i++) {
-            if (!Character.isDigit(dob.charAt(i)) && dob.charAt(i) != '/') {
-                System.out.println("The date contains characters.");
-                return;
-            }
-        }
+        Offer typeClass = getOffer(input[1]);
+        Instructor instructor = getInstructor(input[2]);
+        Location city = getLocation(input[3]);
+        String fname = input[4];
+        String lname = input[5];
+        String dob = input[6];
         String [] dateBirth = dob.split("/");
         int month = Integer.parseInt(dateBirth[0]);
         int day = Integer.parseInt(dateBirth[1]);
         int year = Integer.parseInt(dateBirth[2]);
         Date date = new Date(month,day,year);
-        Profile profile = new Profile(first,second,date);
-        Member member = new Member(profile, null, null);
-        boolean result = members.remove(member);
-        if(!result)
-            System.out.println(first + " " + second + " is not in the member database.");
-        else
-            System.out.println(first + " " + second + " removed.");
+        Profile profile = new Profile(fname,lname,date);
+        Member member = new Member(profile,date,city);
+        if(typeClass==null){
+            System.out.println("Class doesn't exist"); return;
+        }
+        if(city==null){
+            System.out.println("Location doesn't exist"); return;
+        }
+        if(!members.contains(member)){
+            System.out.println("member isn't in the database"); return;
+        }
+        if(instructor==null){
+            System.out.println("instructor doesn't exist"); return;
+        }
+        Schedule schedule = new Schedule();
+        FitnessClass[] classes = schedule.getFitnessClasses();
     }
+
+
+
     /**
      * run the project
      */
@@ -260,12 +270,12 @@ public class StudioManager{
             String command = tokens[0];
             switch(command){
                 case "AB","AF","AP" -> addMember(tokens);
-                case "C" -> {removeMembership(tokens);}
-                case "S" -> {/*display class schedule with the current attendees;*/}
-                case "PM" -> {members.printByMember();}
-                case "PC" -> {members.printByLocation();}
-                case "PF" -> {members.printFees();}
-                case "R" -> {/*take attendance of a member attending a class and add the member to the class*/}
+                case "C" -> removeMember(tokens);
+                case "S" -> {}
+                case "PM" -> members.printByMembers();
+                case "PC" -> members.printByLocation();
+                case "PF" -> members.printFees();
+                case "R" -> commandR(tokens);
                 case "U" -> {/*remove a member from a class*/}
                 case "RG" -> {/*take attendance of a guest attending a class and add the guest to the class*/}
                 case "UG" -> {/*remove guest from class*/}

@@ -1,5 +1,9 @@
 package fitnessclub;
 
+/**
+ * extends member class and includes instance variable guestPass to keep track of num guests
+ * @author Joon Song, Connor Powell
+ */
 public class Premium extends Member{
     private int guestPass;
 
@@ -7,13 +11,29 @@ public class Premium extends Member{
     /**
      * constructor
      *
-     * @param profile
-     * @param expire
-     * @param homeStudio
+     * @param profile profile
+     * @param expire expire date
+     * @param homeStudio location
      */
     public Premium(Profile profile, Date expire, Location homeStudio) {
         super(profile, expire, homeStudio);
         guestPass = 3;
+    }
+
+    /**
+     * getter method
+     * @return guestPasses left
+     */
+    public int getGuestPass() {
+        return guestPass;
+    }
+
+    /**
+     * setter method
+     * @param guestPass guest pass
+     */
+    public void setGuestPass(int guestPass) {
+        this.guestPass = guestPass;
     }
 
     /**
@@ -23,14 +43,6 @@ public class Premium extends Member{
         return 59.99 * 11; /*every year with one month free*/
     }
 
-    public int getGuestPass() {
-        return guestPass;
-    }
-
-    public void setGuestPass(int guestPass) {
-        this.guestPass = guestPass;
-    }
-    
     /**
      * Premium to String
      */

@@ -24,10 +24,10 @@ public class Date implements Comparable<Date>{
     private final int NOVEMBER = 11;
     private final int DECEMBER = 12;
 
-    Calendar today = Calendar.getInstance();
-    int currYear = today.get(Calendar.YEAR);
-    int currMonth = today.get(Calendar.MONTH) + 1;
-    int currDayMonth = today.get(Calendar.DAY_OF_MONTH);
+    static Calendar today = Calendar.getInstance();
+    static int currYear = today.get(Calendar.YEAR);
+    static int currMonth = today.get(Calendar.MONTH) + 1;
+    static int currDayMonth = today.get(Calendar.DAY_OF_MONTH);
 
 
     /**
@@ -49,7 +49,7 @@ public class Date implements Comparable<Date>{
     public boolean isValid() {
         boolean tr = true;
         if(year < 1900) {return false;}
-        if(!over18()) {return false;}
+        if(todayOrAfter()) {return false;}
         if(month < JANUARY || month > DECEMBER)
             tr = false;
         if((month == JANUARY || month == MARCH || month == MAY || month == JULY || month == AUGUST
@@ -120,6 +120,25 @@ public class Date implements Comparable<Date>{
     }
 
     /**
+     * Checks if two dates are equal.
+     * @param obj The object to be compared
+     * @return true if the dates are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Date otherDate = (Date) obj;
+        return this.day == otherDate.day &&
+                this.month == otherDate.month &&
+                this.year == otherDate.year;
+    }
+
+    /**
      * compares 2 dates
      * @param date to be compared.
      * @return 1 if date is after, -1 if date is before, 0 otherwise
@@ -148,10 +167,10 @@ public class Date implements Comparable<Date>{
     /**
      * setting expiration dates for basic
      */
-    public Date basicExpire(){
+    public static Date basicExpire(){
         int maxDayCurrMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int maxDaysNextMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
         today.add(Calendar.MONTH, 1);
+        int maxDaysNextMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
         int expMonth = currMonth+1;
         if(currDayMonth==maxDayCurrMonth){
             return new Date(expMonth,maxDaysNextMonth,currYear);
@@ -163,13 +182,13 @@ public class Date implements Comparable<Date>{
     /**
      * setting expiration date for family
      */
-    public Date familyExpire(){
+    public static Date familyExpire(){
         int maxDayCurrMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int maxDaysNextMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
         today.add(Calendar.MONTH, 3);
+        int maxDaysThreeMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
         int expMonth = currMonth+3;
         if(currDayMonth==maxDayCurrMonth){
-            return new Date(expMonth,maxDaysNextMonth,currYear);
+            return new Date(expMonth,maxDaysThreeMonth,currYear);
         }else{
             return new Date(expMonth,currDayMonth,currYear);
         }
@@ -178,13 +197,20 @@ public class Date implements Comparable<Date>{
     /**
      * setting expiration date for premium
      */
-    public Date premiumExpire(){
+    public static Date premiumExpire(){
         int maxDayCurrMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int maxDaysNextMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
-        today.add(Calendar.MONTH, 12);
+        today.add(Calendar.YEAR, 1);
+        int maxDaysTwelveMonth = today.getActualMaximum(Calendar.DAY_OF_MONTH);
+        if(today.get(Calendar.MONTH) == Calendar.FEBRUARY){
+            if((today.get(Calendar.YEAR)%4==0 || today.get(Calendar.YEAR)%400==0) && today.get(Calendar.YEAR)%100!=0){
+                maxDaysTwelveMonth=29;
+            }else{
+                maxDaysTwelveMonth=28;
+            }
+        }
         int expMonth = currMonth;
         if(currDayMonth==maxDayCurrMonth){
-            return new Date(expMonth,maxDaysNextMonth,currYear);
+            return new Date(expMonth,maxDaysTwelveMonth,currYear);
         }else{
             return new Date(expMonth,currDayMonth,currYear);
         }

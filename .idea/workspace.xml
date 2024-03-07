@@ -5,12 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f824ef11-0489-4ef4-bc11-9342d5aa7c5c" name="Changes" comment="New updates 2/26">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessClub.iml" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessClub.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Basic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Basic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fitnessclub/Date.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Date.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Family.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Family.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fitnessclub/FitnessClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/FitnessClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Instructor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Instructor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Member.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fitnessclub/MemberList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/MemberList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Offer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Offer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Premium.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Premium.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Profile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/RunProject2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/RunProject2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fitnessclub/Schedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Schedule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fitnessclub/StudioManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/StudioManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Time.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Time.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +33,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="JUnit4 Test Class" />
       </list>
     </option>
   </component>
@@ -41,14 +54,66 @@
     "Application.MemberList.executor": "Run",
     "Application.RunProject2.executor": "Run",
     "Application.Schedule.executor": "Run",
+    "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.DateTest.executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit4",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4": "",
+    "create.test.in.the.same.root": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/joonsong/Desktop/Software Methodology /FitnessClub",
     "onboarding.tips.debug.path": "/Users/joonsong/Desktop/Software Methodology/FitnessClub/src/Main.java"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="fitnessclub" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.RunProject2">
+    <configuration name="RunProject2" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="fitnessclub.RunProject2" />
+      <module name="FitnessClub" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="fitnessclub.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DateTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FitnessClub" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="fitnessclub.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="fitnessclub" />
+      <option name="MAIN_CLASS_NAME" value="fitnessclub.DateTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.RunProject2" />
+        <item itemvalue="JUnit.DateTest" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -137,7 +202,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708991462446</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="New updates 2/26">
+      <option name="closed" value="true" />
+      <created>1708996700149</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1708996700149</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

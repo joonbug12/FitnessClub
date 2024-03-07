@@ -1,5 +1,9 @@
 package fitnessclub;
 
+/**
+ *Enum class defining the studio locations
+ * @author Joon Song, Connor Powell
+ */
 public enum Location {
 
     Bridgewater("Bridgewater","08807","Somerset County"),

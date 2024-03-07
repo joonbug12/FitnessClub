@@ -3,7 +3,10 @@ import java.util.Scanner;
 import java.io.IOException;
 import java.io.File;
 
-
+/**
+ * this class holds an arraylist of classes and loads classes in from an input file
+ * @author Joon Song, Connor Powell
+ */
 public class Schedule{
     private FitnessClass[] classes;
     private int numClasses;
@@ -48,11 +51,17 @@ public class Schedule{
         return new FitnessClass(offer,instructor,location,time,null,null);
     }
 
+    /**
+     * getter method
+     */
+    public FitnessClass[] getFitnessClasses(){
+        return classes;
+    }
 
     /**
      * Loads classes from text file
      * @param file to be loaded
-     * @throws IOException
+     * @throws IOException error
      */
     public void load(File file) throws IOException {
         if(!file.exists() || !file.isFile()) {throw new IOException();}
@@ -72,6 +81,15 @@ public class Schedule{
         }while(scanner.hasNextLine());
         scanner.close();
         System.out.println("-end of class list-");
+    }
+
+    public void printSchedule(){
+        for (FitnessClass aClass : classes) {
+            System.out.println(aClass.toString());
+            if (aClass.getMembers() != null) {
+                MemberList members = aClass.getMembers();
+            }
+        }
     }
 
 }

@@ -1,5 +1,9 @@
 package fitnessclub;
 
+/**
+ * hold first, last name, and date of birth
+ * @author Joon Song, Connor Powell
+ */
 public class Profile implements Comparable<Profile>{
     private String fname;
     private String lname;
@@ -40,13 +44,15 @@ public class Profile implements Comparable<Profile>{
      */
     @Override
     public int compareTo(Profile profile){
-        if (this.lname.compareToIgnoreCase(profile.lname) > 0) {return 1;}
-        if (this.lname.compareToIgnoreCase(profile.lname) < 0) {return -1;}
-        if (this.fname.compareToIgnoreCase(profile.fname) > 0) {return 1;}
-        if (this.fname.compareToIgnoreCase(profile.fname) < 0) {return -1;}
-        if(this.dob.compareTo(profile.dob)>0) {return 1;}
-        if (this.dob.compareTo(profile.dob) < 0) {return -1;}
-        return 0;
+        int lastNameComparison = lname.toLowerCase().compareTo(profile.lname.toLowerCase());
+        if (lastNameComparison != 0) {
+            return lastNameComparison;
+        }
+        int firstNameComparison = fname.toLowerCase().compareTo(profile.fname.toLowerCase());
+        if (firstNameComparison != 0) {
+            return firstNameComparison;
+        }
+        return this.dob.compareTo(profile.dob);
 
     }
 
@@ -56,13 +62,12 @@ public class Profile implements Comparable<Profile>{
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Profile) {
-            Profile profile = (Profile) obj;
-            return this.compareTo(profile) == 0;
-        }
-        return false;
+        if (this == obj) return true;
+        if (!(obj instanceof Profile profile)) return false;
+        return fname.equalsIgnoreCase(profile.fname) &&
+                lname.equalsIgnoreCase(profile.lname) &&
+                dob.compareTo(profile.dob) == 0;
     }
-
 
     /**
      * Profile to string

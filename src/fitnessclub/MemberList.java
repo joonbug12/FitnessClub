@@ -3,6 +3,13 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ *array-based implementation of a linear data structure to hold a list of member
+ * objects. An instance of this class is a growable list with an initial array capacity of 4, and it automatically
+ * increases the capacity by 4 whenever it is full. The list does not decrease in capacity. An instance of this
+ * class can hold a list of members with different types of membership.
+ * @author Joon Song, Connor Powell
+ */
 public class MemberList {
     private Member[] members;
     private int size;
@@ -12,9 +19,10 @@ public class MemberList {
      * Default constructor for Member
      */
     public MemberList() {
-        int size = 4;
-        members = new Member[size];
+        members = new Member[4];
+        size=0;
     }
+
 
     /**
      * finds member
@@ -22,8 +30,8 @@ public class MemberList {
      * @return int place in the array, -1 if not found
      */
     private int find(Member member){
-        for(int i=0; i<members.length; i++){
-            if(members[i].equals(member)){
+        for(int i=0; i<size; i++){
+            if(members[i].compareTo(member)==0){
                 return i;
             }
         }
@@ -34,9 +42,8 @@ public class MemberList {
      * expands the array
      */
     private void grow(){
-        size+=4;
-        Member[] temp = new Member[size];
-        for(int i = 0; i < size - 4; i++) {
+        Member[] temp = new Member[members.length+4];
+        for(int i = 0; i < members.length; i++) {
             temp[i] = members[i];
         }
         members = temp;
@@ -45,7 +52,7 @@ public class MemberList {
     /**
      * checks to see if array contains member
      * @param member to be checked
-     * @return true if member exists in the array, fqlse otherwise
+     * @return true if member exists in the array, false otherwise
      */
     public boolean contains(Member member) {
         return find(member) != NOT_FOUND;
@@ -57,26 +64,22 @@ public class MemberList {
      * @param member to be added
      * @return true if added, false otherwise
      */
-    public boolean add(Member member){
+    public boolean add(Member member) {
         Date dob = member.getProfile().getDob();
-        if(members[0]==null) {return false;}
-        if(!dob.isValid()) {return false;}
-        if(!member.getProfile().getDob().over18()) {return false;}
-        if(contains(member)) {return false;}
-        if(member.getProfile()==null || member.getLocation()==null || member.getExpirationDate()==null){
+        if (!dob.isValid()) {return false;}
+        if (!member.getProfile().getDob().over18()) {return false;}
+        if (contains(member)) {return false;}
+        if (member.getProfile() == null || member.getLocation() == null || member.getExpirationDate()==null) {
             return false;
         }
-        for(int i=0; i<size; i++){
-            if(members[i]==null){
-                members[i]=member;
-                return true;
-            }
+        if (size == members.length) {
+            grow();
         }
-        int temp = size;
-        grow();
-        members[temp] = member;
+        members[size] = member;
+        size++;
         return true;
-        }
+    }
+
 
     /**
      * removes an element from the array. Shift up to remove
@@ -84,47 +87,28 @@ public class MemberList {
      * @return true if removed, false otherwise
      */
     public boolean remove(Member member){
-        if(find(member)==NOT_FOUND) {return false;}
         int index = find(member);
-        members[index] = null;
-        for(int i=index+1; i<members.length; i++){
-            members[i-1] = members[i];
+        if(index==NOT_FOUND) {return false;}
+        for (int i = index; i < members.length - 1; i++) {
+            members[i] = members[i + 1];
         }
-        members[members.length-1]=null;
+        members[members.length - 1] = null;
+        size--;
         return true;
     }
 
-
-    public static Basic makeBasic(String[] input){;
-        String fname = input[0];
-        String lname = input[1];
-        String dob = input[2];
-        String expire = input[3];
-        Location location = getLocation(input[4]);
-        String[] dateBirth = dob.split("/");
-        int month = Integer.parseInt(dateBirth[0]);
-        int day = Integer.parseInt(dateBirth[1]);
-        int year = Integer.parseInt(dateBirth[2]);
-        String[] date = expire.split("/");
-        int month1 = Integer.parseInt(date[0]);
-        int day1 = Integer.parseInt(date[1]);
-        int year1 = Integer.parseInt(date[2]);
-        Date dateOfBirth = new Date(month,day,year);
-        Date expires = new Date(month1,day1,year1);
-        Profile profile = new Profile(fname,lname,dateOfBirth);
-        return new Basic(profile,expires,location);
-    }
-
     /**
-     * creates a family member from input
-     * @param input from input
+     * puts the member into the array based on their membership
+     * @param input tokens
+     * @param index index array
      */
-    public static Family makeFamily(String[] input){
-        String fname = input[0];
-        String lname = input[1];
-        String dob = input[2];
-        String expire = input[3];
-        Location location = getLocation(input[4]);
+    public void addTheMember(String[] input,int index){
+        String command = input[0];
+        String fname = input[1];
+        String lname = input[2];
+        String dob = input[3];
+        String expire = input[4];
+        Location location = StudioManager.getLocation(input[5]);
         String[] dateBirth = dob.split("/");
         int month = Integer.parseInt(dateBirth[0]);
         int day = Integer.parseInt(dateBirth[1]);
@@ -133,142 +117,134 @@ public class MemberList {
         int month1 = Integer.parseInt(date[0]);
         int day1 = Integer.parseInt(date[1]);
         int year1 = Integer.parseInt(date[2]);
-        Date dateOfBirth = new Date(month,day,year);
-        Date expires = new Date(month1,day1,year1);
-        Profile profile = new Profile(fname,lname,dateOfBirth);
-        return new Family(profile,expires,location);
-    }
+        Date dateOfBirth = new Date(month, day, year);
+        Date expires = new Date(month1, day1, year1);
+        Profile profile = new Profile(fname, lname, dateOfBirth);
+        switch(command){
+            case "B" -> {
+                Basic basic = new Basic(profile,expires,location);
+                members[index] = (basic);
+                System.out.println(basic);
+            }
+            case "F" -> {
+                Family family = new Family(profile,expires,location);
+                members[index] = (family);
+                System.out.println(family);
+            }
+            case "P" -> {
+                Premium premium = new Premium(profile,expires,location);
+                members[index] = (premium);
+                System.out.println(premium);
+            }
+        }
+        grow();
+        size++;
 
-    /**
-     * creates a premium member from input
-     * @param input from input
-     */
-    public static Premium makePremium(String[] input){
-        String fname = input[0];
-        String lname = input[1];
-        String dob = input[2];
-        String expire = input[3];
-        Location location = getLocation(input[4]);
-        String[] dateBirth = dob.split("/");
-        int month = Integer.parseInt(dateBirth[0]);
-        int day = Integer.parseInt(dateBirth[1]);
-        int year = Integer.parseInt(dateBirth[2]);
-        String[] date = expire.split("/");
-        int month1 = Integer.parseInt(date[0]);
-        int day1 = Integer.parseInt(date[1]);
-        int year1 = Integer.parseInt(date[2]);
-        Date dateOfBirth = new Date(month,day,year);
-        Date expires = new Date(month1,day1,year1);
-        Profile profile = new Profile(fname,lname,dateOfBirth);
-        return new Premium(profile,expires,location);
     }
     /**
      * Loads the list of members from text file
      * @param file to be loaded
-     * @throws IOException
+     * @throws IOException error
      */
     public void load(File file) throws IOException{
+        MemberList memberList = new MemberList();
         if(!file.exists() || !file.isFile()) {throw new IOException();}
         System.out.println("-list of members loaded-");
         Scanner scanner = new Scanner(file);
         int index=0;
+        if(memberList.size==0) {grow();}
         do{
             String line = scanner.nextLine();
             String[] tokens = line.split("\\s");
-            String command = tokens[0];
-            for(int i=0; i<tokens.length-1; i++){
-                tokens[i] = tokens[i+1];
-            }
-            switch(command){
-                case "B" -> {
-                    Basic basic = StudioManager.createBasic(tokens);
-                    members[index]=basic;
-                    System.out.println(basic.toString());
-                }
-                case "F" -> {
-                    Family family = StudioManager.createFamily(tokens);
-                    members[index]=family;
-                    System.out.println(family.toString());
-                }
-                case "P" -> {
-                    Premium premium = StudioManager.createPremium(tokens);
-                    members[index]=premium;
-                    System.out.println(premium.toString());
-                }
-            }
-            grow();
+            addTheMember(tokens, index);
             index++;
         }while(scanner.hasNextLine());
         System.out.println("-end of list-");
     }
 
+
     /**
      * sort by county, then zipcode
      */
     public void printByLocation(){
-        for(int i=0; i<members.length-1; i++){
-            for(int j=i+1; j<members.length; j++){
-                Member m1 = members[i];
-                Member m2 = members[j];
-                if(m1.getLocation().getCounty().compareTo(m2.getLocation().getCounty())>0){
-                    members[i]=m2;
-                    members[j]=m1;
-                }else if(m1.getLocation().getCounty().compareTo(m2.getLocation().getCounty())==0){
-                    if(m1.getLocation().getZipCode().compareTo(m2.getLocation().getZipCode())>0){
-                        members[i]=m2;
-                        members[j]=m1;
+        Member[] members1 = members;
+        if(members1.length==0){
+            System.out.println("Member database is empty");
+        }
+        if(size==1){
+            System.out.println(members1[0]);
+            return;
+        }
+        int n=members1.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n - i - 1; j++) {
+                Member m1 = members1[i];
+                Member m2 = members1[j];
+                if (m1.getLocation().getCounty().compareTo(m2.getLocation().getCounty()) > 0) {
+                    members1[i] = m2;
+                    members1[j] = m1;
+                } else if (m1.getLocation().getCounty().compareTo(m2.getLocation().getCounty()) == 0) {
+                    if (m1.getLocation().getZipCode().compareTo(m2.getLocation().getZipCode()) > 0) {
+                        members1[i] = m2;
+                        members1[j] = m1;
                     }
                 }
             }
-            for(Member member:members) {System.out.println(member);}
+        }
+        for (int i = 0; i < members1.length-1; i++) {
+            System.out.println(members1[i].toString());
         }
     }
+
 
     /**
      * sort by member profile. Last name first, then first name, then dob.
      */
-    public void printByMember(){
-        for(int i=0; i<members.length-1; i++){
-            for(int j=i+1; j<members.length;j++){
-                Member m1 = members[i];
-                Member m2 = members[j];
-                if(m1.getProfile().getLastName().compareTo(m2.getProfile().getLastName())>0){
-                    members[i]=m2;
-                    members[j]=m1;
-                }else if(m1.getProfile().getLastName().compareTo(m2.getProfile().getLastName())==0){
-                    if(m1.getProfile().getFirstName().compareTo(m2.getProfile().getFirstName())>0){
-                        members[i]=m2;
-                        members[j]=m1;
-                    }else if(m1.getProfile().getFirstName().compareTo(m2.getProfile().getFirstName())==0){
-                        if(m1.getProfile().getDob().compareTo(m2.getProfile().getDob())>0){
-                            members[i]=m2;
-                            members[j]=m1;
+    public void printByMembers(){
+        Member[] members1 = members;
+        if(size==0){
+            System.out.println("Member database is empty");
+            return;
+        }
+        if(size==1){
+            System.out.println(members1[0]);
+            return;
+        }
+        int n = members1.length;
+        for (int i = 0; i < n -1 ; i++) {
+            for (int j = i + 1; j < n - i - 1; j++) {
+                Member m1 = members1[i];
+                Member m2 = members1[j];
+                if (m1.getProfile().getLastName().compareTo(m2.getProfile().getLastName()) > 0) {
+                    members1[i] = m2;
+                    members1[j] = m1;
+                }else if (m1.getProfile().getLastName().compareTo(m2.getProfile().getLastName()) == 0) {
+                    if (m1.getProfile().getFirstName().compareTo(m2.getProfile().getFirstName()) > 0) {
+                        members1[i] = m2;
+                        members1[j] = m1;
+                    }else if (m1.getProfile().getFirstName().compareTo(m2.getProfile().getFirstName()) == 0) {
+                        if (m1.getProfile().getDob().compareTo(m2.getProfile().getDob()) > 0) {
+                            members1[i] = m2;
+                            members1[j] = m1;
                         }
                     }
                 }
             }
         }
-        for(Member member:members) {System.out.println(member);}
+        for (int i = 0; i < members1.length-1; i++) {
+            System.out.println(members1[i].toString());
+        }
     }
+
 
     /**
      * print the array as is with the next due amounts
      */
-    public void printFees() {
+    public void printFees(){
         for (Member member : members) {
             System.out.println(member + " [next due: $" + member.bill() + "]");
         }
     }
 
-    public static void main(String[] args){
-        MemberList myObject = new MemberList();
-        File file = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/memberList.txt");
-        try {
-            myObject.load(file);
-            System.out.println("File loaded and printed successfully.");
-        } catch (IOException e) {
-            System.out.println("An error occurred while loading the file: " + e.getMessage());
-        }
-    }
 }
 

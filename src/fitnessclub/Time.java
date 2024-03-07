@@ -1,4 +1,9 @@
 package fitnessclub;
+
+/**
+ * enum class for time
+ * @author Joon Song, Connor Powell
+ */
 public enum Time{
     MORNING(9,30) ,
     AFTERNOON (14,0),
@@ -9,6 +14,8 @@ public enum Time{
 
     /**
      * constructor
+     * @param hour hour
+     * @param minutes minute
      */
      Time(int hour, int minutes){
          this.hour=hour;
