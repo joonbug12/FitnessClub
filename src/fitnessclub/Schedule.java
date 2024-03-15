@@ -10,6 +10,7 @@ import java.io.File;
 public class Schedule{
     private FitnessClass[] classes;
     private int numClasses;
+    private static final int NOT_FOUND = -1;
 
     /**
      * default constructor
@@ -17,6 +18,17 @@ public class Schedule{
     public Schedule() {
         classes = new FitnessClass[4];
         numClasses=0;
+    }
+    public int find (FitnessClass fclass) {
+        for(int i = 0; i < classes.length;i++) {
+            if(classes[i].equals(fclass))
+                return i;
+        }
+        return NOT_FOUND;
+    }
+
+    public boolean contains(FitnessClass fclass) {
+        return find(fclass) != NOT_FOUND;
     }
 
     /**
@@ -81,9 +93,14 @@ public class Schedule{
     public void printSchedule(){
         for(int i=0; i<numClasses;i++){
             System.out.println(classes[i]);
+            if(classes[i].getMembers().getSize() > 0) {
+                System.out.println("[attendees]");
+                classes[i].getMembers().printByLocation();
+            }
+            if(classes[i].getGuests().getSize() > 0) {
+                System.out.println("[guests]");
+                classes[i].getGuests().printByLocation();
+            }
         }
     }
-
-
-
 }
