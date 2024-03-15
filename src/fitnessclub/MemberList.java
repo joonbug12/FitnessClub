@@ -58,7 +58,14 @@ public class MemberList {
         return find(member) != NOT_FOUND;
     }
 
+    public int getSize() {return size;}
+    public Member [] getMembers() {return members;}
 
+    public Member getMember(Member member) {
+        if(contains(member))
+            return members[find(member)];
+        return null;
+    }
     /**
      * adds a member to the end of the array
      * @param member to be added
@@ -66,10 +73,11 @@ public class MemberList {
      */
     public boolean add(Member member) {
         Date dob = member.getProfile().getDob();
-        if (!dob.isValid()) {return false;}
-        if (!member.getProfile().getDob().over18()) {return false;}
-        if (contains(member)) {return false;}
+        if (!dob.isValid()) {System.out.println("Invalid DOB"); return false;}
+        if (!member.getProfile().getDob().over18()) {System.out.println("Not over 18"); return false;}
+        if (contains(member)) {System.out.println("Member already in class");return false;}
         if (member.getProfile() == null || member.getLocation() == null || member.getExpirationDate()==null) {
+            System.out.println("Missing information");
             return false;
         }
         if (size == members.length) {
@@ -243,4 +251,3 @@ public class MemberList {
     }
 
 }
-
