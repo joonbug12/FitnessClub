@@ -1,9 +1,4 @@
 package fitnessclub;
-
-/**
- * each member holds a profile, date of expiration, and a home location
- * @author Joon Song, Connor Powell
- */
 public class Member implements Comparable <Member>{
     private Profile profile;
     private Date expire;
@@ -43,31 +38,22 @@ public class Member implements Comparable <Member>{
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
+        if(obj instanceof Member) {
+            Member member = (Member) obj;
+            return this.profile.equals(member.profile);
         }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        Member otherMember = (Member) obj;
-        return this.profile.equals(otherMember.getProfile()) &&
-                this.expire.equals(otherMember.getExpirationDate()) &&
-                this.homeStudio.equals(otherMember.getLocation());
+        return false;
     }
 
     /**
      * compares 2 members
      * @param member the object to be compared.
-     * @return int based on which is greater
+     * @return
      */
     public int compareTo(Member member){
-        String className = this.getClass().getSimpleName();
-        String otherClassName = member.getClass().getSimpleName();
-        int typeComparison = className.compareTo(otherClassName);
-        if (typeComparison != 0) {
-            return typeComparison;
-        }
-        return this.profile.compareTo(member.profile);
+        if(this.profile.compareTo(member.profile)>0) {return 1;}
+        if(this.profile.compareTo(member.profile)<0) {return -1;}
+        return 0;
     }
 
     /**
@@ -91,4 +77,3 @@ public class Member implements Comparable <Member>{
 
 
 }
-
