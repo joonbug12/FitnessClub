@@ -203,11 +203,11 @@ public class StudioManager{
      * Print members and classes
      */
     public void printMAndC(){
-        File file = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/memberList.txt");
+        File file = new File("/Users/connorpowell/IdeaProjects/StudioManager/src/memberList.txt");
         try {members.load(file);}
         catch (IOException e) {}
 
-        File file1 = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/classSchedule.txt");
+        File file1 = new File("/Users/connorpowell/IdeaProjects/StudioManager/src/classSchedule.txt");
         try {classes.load(file1);}
         catch (IOException e){}
     }
@@ -216,33 +216,48 @@ public class StudioManager{
     /**
      * helper method for R
      */
-    public void commandR(String[] input){
-        if(input.length<7){System.out.println("missing data tokens");return;}
+    public void register(String[] input) {
+        if (input.length < 7) {System.out.println("missing data tokens");return;}
         Offer typeClass = getOffer(input[1]);
-        if(typeClass==null){System.out.println("Class doesn't exist"); return;}
+        if (typeClass == null) {System.out.println("Class doesn't exist");return;}
         Instructor instructor = getInstructor(input[2]);
-        if(instructor==null){System.out.println("instructor doesn't exist"); return;}
+        if (instructor == null) {System.out.println("instructor doesn't exist");return;}
         Location city = getLocation(input[3]);
-        if(city==null){
-            System.out.println("Location doesn't exist"); return;
-        }
+        if (city == null) {System.out.println("Location doesn't exist");return;}
         String fname = input[4];
         String lname = input[5];
         String dob = input[6];
-        String [] dateBirth = dob.split("/");
+        String[] dateBirth = dob.split("/");
         int month = Integer.parseInt(dateBirth[0]);
         int day = Integer.parseInt(dateBirth[1]);
         int year = Integer.parseInt(dateBirth[2]);
-        Date date = new Date(month,day,year);
-        Profile profile = new Profile(fname,lname,date);
-        Member member = new Member(profile,date,city);
-        if(!members.contains(member)){
-            System.out.println("member isn't in the database"); return;
+        Date date = new Date(month, day, year);
+        Profile profile = new Profile(fname, lname, date);
+        Member member = new Member(profile, date, city);
+        if (!members.contains(member)) {System.out.println("member isn't in the database");return;}
+        FitnessClass temp = new FitnessClass(typeClass, instructor, city, null, null, null);
+        if (!classes.contains(temp)) {System.out.println("Class doesn't exist");return;}
+        FitnessClass fclass = classes.getFitnessClasses()[classes.find(temp)];
+
+        FitnessClass[] list = classes.getFitnessClasses();
+        for (int i = 0; i < list.length && list[i] != null; i++) {
+            if (list[i].getMembers().contains(member) && list[i].getTime().getHour() == fclass.getTime().getHour() &&
+                list[i].getTime().getMinute() == fclass.getTime().getMinute()) {
+                if(list[i].equals(fclass)) break;
+                System.out.println("Member has a time conflict");
+            }
         }
-
+        Member member1 = members.getMember(member);
+        if(!fclass.getMembers().add(member1)) return;
+        if(member1 instanceof Basic) {
+            if(fclass.getStudio() != city) {
+                System.out.println("Basic members can only attend classes from their home studio");
+                return;
+            }
+            ((Basic) member1).setNumClasses(((Basic) member1).getNumClasses() + 1);
+        }
+        System.out.println("Member added to class successfully");
     }
-
-
 
     /**
      * run the project
@@ -262,7 +277,7 @@ public class StudioManager{
                 case "PM" -> members.printByMembers();
                 case "PC" -> members.printByLocation();
                 case "PF" -> members.printFees();
-                case "R" -> commandR(tokens);
+                case "R" -> register(tokens);
                 case "U" -> {/*remove a member from a class*/}
                 case "RG" -> {/*take attendance of a guest attending a class and add the guest to the class*/}
                 case "UG" -> {/*remove guest from class*/}
@@ -274,4 +289,3 @@ public class StudioManager{
         System.out.println("StudioManager terminated.");
     }
 }
-
