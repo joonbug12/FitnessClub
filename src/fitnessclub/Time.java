@@ -1,9 +1,4 @@
 package fitnessclub;
-
-/**
- * enum class for time
- * @author Joon Song, Connor Powell
- */
 public enum Time{
     MORNING(9,30) ,
     AFTERNOON (14,0),
@@ -14,13 +9,11 @@ public enum Time{
 
     /**
      * constructor
-     * @param hour hour
-     * @param minutes minute
      */
-     Time(int hour, int minutes){
-         this.hour=hour;
-         this.minutes=minutes;
-     }
+    Time(int hour, int minutes){
+        this.hour=hour;
+        this.minutes=minutes;
+    }
 
     /**
      * getter method
@@ -33,4 +26,16 @@ public enum Time{
      * @return minute
      */
     public int getMinute() {return this.minutes;}
+
+    /**
+     * Creates a string for the time.
+     * @return String representation of the time
+     */
+    @Override
+    public String toString() {
+        if(this.minutes == 0) {
+            return this.hour + ":00";
+        }
+        return this.hour + ":" + this.minutes;
+    }
 }
