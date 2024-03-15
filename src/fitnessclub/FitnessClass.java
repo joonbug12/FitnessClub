@@ -1,8 +1,6 @@
 package fitnessclub;
-
 /**
- * includes offer, instructor, location, time, members, and guests in a class
- * @author Joon Song, Connor Powell
+ * class
  */
 public class FitnessClass{
     private Offer classInfo;
@@ -43,14 +41,6 @@ public class FitnessClass{
      */
     public Location getStudio() {return this.studio;}
 
-
-    /**
-     * add method
-     */
-    public void addPerson(Member member){
-        members.add(member);
-    }
-
     /**
      * getter method
      * @return time
@@ -75,9 +65,17 @@ public class FitnessClass{
      */
     @Override
     public String toString(){
-        return this.classInfo.toString().toUpperCase() + " - " + this.instructor.toString().toUpperCase() + ", " +
-               this.time.getHour() + ":" + this.time.getMinute() + ", " + this.studio.getCity().toUpperCase();
+        return this.classInfo.toString().toUpperCase() + "-" + this.instructor.toString().toUpperCase() + ", " +
+                this.time +  ", " + this.studio.getCity().toUpperCase();
     }
 
+    /**
+     * Determines whet
+     * @param fclass the class to compare to.
+     * @return true if the instructor, the classinfo, and the location are the same, false otherwise
+     */
+    public boolean equals(FitnessClass fclass) {
+        return fclass.getInstructor() == this.getInstructor() && fclass.getClassInfo() == this.classInfo
+                && fclass.getStudio() == this.getStudio();
+    }
 }
-
