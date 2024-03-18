@@ -6,11 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="f824ef11-0489-4ef4-bc11-9342d5aa7c5c" name="Changes" comment="New updates 2/26">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Basic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Basic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fitnessclub/FitnessClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/FitnessClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Member.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fitnessclub/MemberList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/MemberList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fitnessclub/Schedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Schedule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fitnessclub/StudioManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/StudioManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Time.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Time.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,27 +39,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.MemberList.executor&quot;: &quot;Run&quot;,
-    &quot;Application.RunProject2.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Schedule.executor&quot;: &quot;Run&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;JUnit.DateTest.executor&quot;: &quot;Run&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit4&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4&quot;: &quot;&quot;,
-    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/joonsong/Desktop/Software Methodology /FitnessClub&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/joonsong/Desktop/Software Methodology/FitnessClub/src/Main.java&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.MemberList.executor": "Run",
+    "Application.RunProject2.executor": "Run",
+    "Application.Schedule.executor": "Run",
+    "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.DateTest.executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit4",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4": "",
+    "create.test.in.the.same.root": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/joonsong/Desktop/Software Methodology /FitnessClub",
+    "onboarding.tips.debug.path": "/Users/joonsong/Desktop/Software Methodology/FitnessClub/src/Main.java"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -215,7 +216,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709821136542</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="New updates 2/26">
+      <option name="closed" value="true" />
+      <created>1709831411315</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1709831411315</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

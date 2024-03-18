@@ -1,3 +1,4 @@
+
 package fitnessclub;
 import java.util.Scanner;
 import java.io.IOException;
@@ -64,6 +65,11 @@ public class Schedule{
     public FitnessClass[] getFitnessClasses(){
         return classes;
     }
+
+    /**
+     * getter method
+     */
+    public int getNumClasses(){return numClasses;}
 
     /**
      * Loads classes from text file

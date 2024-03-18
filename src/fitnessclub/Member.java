@@ -1,3 +1,4 @@
+
 package fitnessclub;
 public class Member implements Comparable <Member>{
     private Profile profile;

@@ -1,3 +1,4 @@
+
 package fitnessclub;
 import java.io.IOException;
 import java.util.Scanner;
@@ -203,11 +204,11 @@ public class StudioManager{
      * Print members and classes
      */
     public void printMAndC(){
-        File file = new File("/Users/connorpowell/IdeaProjects/StudioManager/src/memberList.txt");
+        File file = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/memberList.txt");
         try {members.load(file);}
         catch (IOException e) {}
 
-        File file1 = new File("/Users/connorpowell/IdeaProjects/StudioManager/src/classSchedule.txt");
+        File file1 = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/classSchedule.txt");
         try {classes.load(file1);}
         catch (IOException e){}
     }
@@ -242,7 +243,7 @@ public class StudioManager{
         FitnessClass[] list = classes.getFitnessClasses();
         for (int i = 0; i < list.length && list[i] != null; i++) {
             if (list[i].getMembers().contains(member) && list[i].getTime().getHour() == fclass.getTime().getHour() &&
-                list[i].getTime().getMinute() == fclass.getTime().getMinute()) {
+                    list[i].getTime().getMinute() == fclass.getTime().getMinute()) {
                 if(list[i].equals(fclass)) break;
                 System.out.println("Member has a time conflict");
             }
@@ -252,6 +253,75 @@ public class StudioManager{
         if(member1 instanceof Basic) {
             if(fclass.getStudio() != city) {
                 System.out.println("Basic members can only attend classes from their home studio");
+                return;
+            }
+            ((Basic) member1).setNumClasses(((Basic) member1).getNumClasses() + 1);
+        }
+        System.out.println("Member added to class successfully");
+    }
+
+    /**
+     * helper method for U function
+     */
+    public void removeFromClass(String[] tokens){
+        if(tokens.length<5){
+            System.out.println("missing data tokens");
+            return;
+        }
+        Offer typeClass = getOffer(tokens[1]);
+        String fname = tokens[2];
+        String lname = tokens[3];
+        String dob = tokens[4];
+        String[] dateBirth = dob.split("/");
+        int month = Integer.parseInt(dateBirth[0]);
+        int day = Integer.parseInt(dateBirth[1]);
+        int year = Integer.parseInt(dateBirth[2]);
+        Date date = new Date(month, day, year);
+        Profile profile = new Profile(fname,lname,date);
+        Member member = new Member(profile, null,null);
+        FitnessClass[] fitnessClasses = classes.getFitnessClasses();
+        for(int i=0; i< classes.getNumClasses(); i++){
+            FitnessClass currentClass = fitnessClasses[i];
+            if(currentClass.getClassInfo() == typeClass){
+                MemberList classMembers = currentClass.getMembers();
+                if(classMembers.contains(member)){
+                    classMembers.remove(member);
+                }
+            }
+        }
+    }
+
+    /**
+     * helper method for RG
+     */
+    public void addGuest(String[] tokens){
+        if(tokens.length<7){
+            System.out.println("missing data tokens");
+            return;
+        }
+        Offer typeClass = getOffer(tokens[1]);
+        if (typeClass == null) {System.out.println("Class doesn't exist");return;}
+        Instructor instructor = getInstructor(tokens[2]);
+        if (instructor == null) {System.out.println("instructor doesn't exist");return;}
+        Location city = getLocation(tokens[3]);
+        if (city == null) {System.out.println("Location doesn't exist");return;}
+        String fname = tokens[4], lname = tokens[5], dob = tokens[6];
+        String[] dateBirth = dob.split("/");
+        int month = Integer.parseInt(dateBirth[0]);
+        int day = Integer.parseInt(dateBirth[1]);
+        int year = Integer.parseInt(dateBirth[2]);
+        Date date = new Date(month, day, year);
+        Profile profile = new Profile(fname, lname, date);
+        Member member = new Member(profile, date, city);
+        if (!members.contains(member)) {System.out.println("member isn't in the database");return;}
+        FitnessClass temp = new FitnessClass(typeClass, instructor, city, null, null, null);
+        if (!classes.contains(temp)) {System.out.println("Class doesn't exist");return;}
+        FitnessClass fclass = classes.getFitnessClasses()[classes.find(temp)];
+        Member member1 = members.getMember(member);
+        if(!fclass.getMembers().add(member1)) return;
+        if(member1 instanceof Basic) {
+            if(fclass.getStudio() != city) {
+                System.out.println("Basic members can only add guests from their home studio");
                 return;
             }
             ((Basic) member1).setNumClasses(((Basic) member1).getNumClasses() + 1);
@@ -278,7 +348,7 @@ public class StudioManager{
                 case "PC" -> members.printByLocation();
                 case "PF" -> members.printFees();
                 case "R" -> register(tokens);
-                case "U" -> {/*remove a member from a class*/}
+                case "U" -> removeFromClass(tokens);
                 case "RG" -> {/*take attendance of a guest attending a class and add the guest to the class*/}
                 case "UG" -> {/*remove guest from class*/}
                 case "Q" -> {break outerLoop;}
