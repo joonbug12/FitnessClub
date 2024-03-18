@@ -318,16 +318,21 @@ public class StudioManager{
         if (!classes.contains(temp)) {System.out.println("Class doesn't exist");return;}
         FitnessClass fclass = classes.getFitnessClasses()[classes.find(temp)];
         Member member1 = members.getMember(member);
-        if(!fclass.getMembers().add(member1)) return;
-        if(member1 instanceof Basic) {
-            if(fclass.getStudio() != city) {
-                System.out.println("Basic members can only add guests from their home studio");
-                return;
+        if(member1 instanceof Basic) {System.out.println("Basic members cant add guests");}
+        else if(member1 instanceof Family){
+            if(fclass.getStudio() != city) {System.out.println("Family members can only add guests from their home studio"); return;}
+            else{
+                if(((Family) member1).containsGuest()){System.out.println("This member already has a guest"); return;}
+                else{((Family) member1).addNewGuest();}
             }
-            ((Basic) member1).setNumClasses(((Basic) member1).getNumClasses() + 1);
+        }else{
+            if(((Premium) member1).numGuests()<1){System.out.println("You already have the max amount of guests"); return;}
+            else{
+                ((Premium) member1).addAGuest();
+            }
         }
-        System.out.println("Member added to class successfully");
     }
+
 
     /**
      * run the project
@@ -349,7 +354,7 @@ public class StudioManager{
                 case "PF" -> members.printFees();
                 case "R" -> register(tokens);
                 case "U" -> removeFromClass(tokens);
-                case "RG" -> {/*take attendance of a guest attending a class and add the guest to the class*/}
+                case "RG" -> addGuest(tokens);
                 case "UG" -> {/*remove guest from class*/}
                 case "Q" -> {break outerLoop;}
                 default -> System.out.println(command + " is an Invalid Command!");

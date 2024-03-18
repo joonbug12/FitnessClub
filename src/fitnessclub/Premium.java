@@ -30,11 +30,16 @@ public class Premium extends Member{
 
     /**
      * setter method
-     * @param guestPass guest pass
      */
-    public void setGuestPass(int guestPass) {
-        this.guestPass = guestPass;
+    public void addAGuest() {
+        this.guestPass -=1;
+        System.out.println("Guest added");
     }
+
+    /**
+     * getter method
+     */
+    public int numGuests() {return this.guestPass;}
 
     /**
      * bill method for premium

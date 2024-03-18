@@ -37,11 +37,16 @@ public class Family extends Member{
     }
 
     /**
-     * setter method
-     * @param guest guest
+     * getter method
      */
-    public void setGuest(boolean guest) {
-        this.guest = guest;
+    public boolean containsGuest(){return guest;}
+
+    /**
+     * setter method
+     */
+    public void addNewGuest() {
+        this.guest = true;
+        System.out.println("Guest Added");
     }
 
     /**
