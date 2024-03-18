@@ -21,7 +21,7 @@ public class Schedule{
         numClasses=0;
     }
     public int find (FitnessClass fclass) {
-        for(int i = 0; i < classes.length;i++) {
+        for(int i = 0; i < numClasses;i++) {
             if(classes[i].equals(fclass))
                 return i;
         }
