@@ -37,6 +37,14 @@ public class Premium extends Member{
     }
 
     /**
+     * setter method
+     */
+    public void removeAGuest() {
+        this.guestPass +=1;
+        System.out.println("Guest removed");
+    }
+
+    /**
      * getter method
      */
     public int numGuests() {return this.guestPass;}

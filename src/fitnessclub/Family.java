@@ -50,6 +50,14 @@ public class Family extends Member{
     }
 
     /**
+     * setter method
+     */
+    public void removeGuest(){
+        this.guest=false;
+        System.out.println("guest removed");
+    }
+
+    /**
      * Family to String
      * @return family member as a string
      */

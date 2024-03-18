@@ -333,6 +333,48 @@ public class StudioManager{
         }
     }
 
+    /**
+     * helper method for UG
+     */
+    public void removeGuest(String[] tokens){
+        if(tokens.length<7){
+            System.out.println("missing data tokens");
+            return;
+        }
+        Offer typeClass = getOffer(tokens[1]);
+        if (typeClass == null) {System.out.println("Class doesn't exist");return;}
+        Instructor instructor = getInstructor(tokens[2]);
+        if (instructor == null) {System.out.println("instructor doesn't exist");return;}
+        Location city = getLocation(tokens[3]);
+        if (city == null) {System.out.println("Location doesn't exist");return;}
+        String fname = tokens[4], lname = tokens[5], dob = tokens[6];
+        String[] dateBirth = dob.split("/");
+        int month = Integer.parseInt(dateBirth[0]);
+        int day = Integer.parseInt(dateBirth[1]);
+        int year = Integer.parseInt(dateBirth[2]);
+        Date date = new Date(month, day, year);
+        Profile profile = new Profile(fname, lname, date);
+        Member member = new Member(profile, date, city);
+        if (!members.contains(member)) {System.out.println("member isn't in the database");return;}
+        FitnessClass temp = new FitnessClass(typeClass, instructor, city, null, null, null);
+        if (!classes.contains(temp)) {System.out.println("Class doesn't exist");return;}
+        FitnessClass fclass = classes.getFitnessClasses()[classes.find(temp)];
+        Member member1 = members.getMember(member);
+        if(member1 instanceof Basic) {System.out.println("Basic members don't have any guests");}
+        else if(member1 instanceof Family){
+            if(fclass.getStudio() != city) {System.out.println("Family members can only have guests from their home studio");}
+            else{
+                if(!((Family) member1).containsGuest()){System.out.println("there is no guest to remove");}
+                else{((Family) member1).removeGuest();}
+            }
+        }else{
+            if(((Premium) member1).numGuests()>2){System.out.println("there is no guest to remove");}
+            else{
+                ((Premium) member1).removeAGuest();
+            }
+        }
+    }
+
 
     /**
      * run the project
