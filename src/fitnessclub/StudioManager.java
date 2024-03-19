@@ -204,11 +204,11 @@ public class StudioManager{
      * Print members and classes
      */
     public void printMAndC(){
-        File file = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/memberList.txt");
+        File file = new File("/Users/connorpowell/IdeaProjects/StudioManager/src/memberList.txt");
         try {members.load(file);}
         catch (IOException e) {}
 
-        File file1 = new File("/Users/joonsong/Desktop/Software Methodology /FitnessClub/classSchedule.txt");
+        File file1 = new File("/Users/connorpowell/IdeaProjects/StudioManager/src/classSchedule.txt");
         try {classes.load(file1);}
         catch (IOException e){}
     }
@@ -327,13 +327,11 @@ public class StudioManager{
             if(fclass.getStudio() != city) {System.out.println("Family members can only add guests from their home studio");}
             else{
                 if(((Family) member1).containsGuest()){System.out.println("This member already has a guest");}
-                else{((Family) member1).addNewGuest();}
+                else{((Family) member1).addNewGuest(); fclass.getGuests().add(member1);}
             }
         }else{
             if(((Premium) member1).numGuests()<1){System.out.println("You already have the max amount of guests");}
-            else{
-                ((Premium) member1).addAGuest();
-            }
+            else{((Premium) member1).addAGuest();fclass.getGuests().add(member1);}
         }
     }
 
