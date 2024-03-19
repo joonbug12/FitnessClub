@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f824ef11-0489-4ef4-bc11-9342d5aa7c5c" name="Changes" comment="new updates 3/19">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessClub.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/classSchedule.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memberList.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Basic.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Date.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Family.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/FitnessClass.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Instructor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Location.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Member.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/MemberList.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Offer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Premium.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Profile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/RunProject2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Schedule.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/StudioManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Time.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="JUnit4 Test Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;joonbug12&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="47df8025-b53b-44f5-8d37-55b88cab8539" />
+        <option name="url" value="https://github.com/joonbug12/FitnessClub.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2chgR3enwGB9t5WKGgOmXmpgL5a" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.MemberList.executor&quot;: &quot;Run&quot;,
+    &quot;Application.RunProject2.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Schedule.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;JUnit.DateTest.executor&quot;: &quot;Run&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit4&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4&quot;: &quot;&quot;,
+    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/joonsong/Desktop/Software Methodology /FitnessClub&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/joonsong/Desktop/Software Methodology/FitnessClub/src/Main.java&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="fitnessclub" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.RunProject2">
+    <configuration name="RunProject2" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="fitnessclub.RunProject2" />
+      <module name="FitnessClub" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="fitnessclub.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DateTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FitnessClub" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="fitnessclub.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="fitnessclub" />
+      <option name="MAIN_CLASS_NAME" value="fitnessclub.DateTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.RunProject2" />
+        <item itemvalue="JUnit.DateTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-322ed176" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f824ef11-0489-4ef4-bc11-9342d5aa7c5c" name="Changes" comment="" />
+      <created>1708569214399</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1708569214399</updated>
+    </task>
+    <task id="LOCAL-00001" summary="New updates">
+      <option name="closed" value="true" />
+      <created>1708617401165</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1708617401165</updated>
+    </task>
+    <task id="LOCAL-00002" summary="New updates">
+      <option name="closed" value="true" />
+      <created>1708641808015</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1708641808015</updated>
+    </task>
+    <task id="LOCAL-00003" summary="New updates">
+      <option name="closed" value="true" />
+      <created>1708641880063</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1708641880063</updated>
+    </task>
+    <task id="LOCAL-00004" summary="New updates">
+      <option name="closed" value="true" />
+      <created>1708712387529</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1708712387529</updated>
+    </task>
+    <task id="LOCAL-00005" summary="New updates">
+      <option name="closed" value="true" />
+      <created>1708715457920</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1708715457920</updated>
+    </task>
+    <task id="LOCAL-00006" summary="New updates">
+      <option name="closed" value="true" />
+      <created>1708715846172</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1708715846172</updated>
+    </task>
+    <task id="LOCAL-00007" summary="New updates">
+      <option name="closed" value="true" />
+      <created>1708717852731</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1708717852731</updated>
+    </task>
+    <task id="LOCAL-00008" summary="New updates 2/26">
+      <option name="closed" value="true" />
+      <created>1708990122348</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1708990122348</updated>
+    </task>
+    <task id="LOCAL-00009" summary="New updates 2/26">
+      <option name="closed" value="true" />
+      <created>1708991462446</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1708991462446</updated>
+    </task>
+    <task id="LOCAL-00010" summary="New updates 2/26">
+      <option name="closed" value="true" />
+      <created>1708996700149</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1708996700149</updated>
+    </task>
+    <task id="LOCAL-00011" summary="New updates 2/26">
+      <option name="closed" value="true" />
+      <created>1709820888104</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1709820888104</updated>
+    </task>
+    <task id="LOCAL-00012" summary="New updates 2/26">
+      <option name="closed" value="true" />
+      <created>1709821136542</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1709821136542</updated>
+    </task>
+    <task id="LOCAL-00013" summary="New updates 2/26">
+      <option name="closed" value="true" />
+      <created>1709831411315</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1709831411315</updated>
+    </task>
+    <task id="LOCAL-00014" summary="New updates 2/26">
+      <option name="closed" value="true" />
+      <created>1710778869179</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1710778869179</updated>
+    </task>
+    <task id="LOCAL-00015" summary="New updates 2/26">
+      <option name="closed" value="true" />
+      <created>1710781759722</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1710781759722</updated>
+    </task>
+    <task id="LOCAL-00016" summary="new updates 3/19">
+      <option name="closed" value="true" />
+      <created>1710822175557</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1710822175557</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="New updates" />
+    <MESSAGE value="New updates 2/26" />
+    <MESSAGE value="new updates 3/19" />
+    <option name="LAST_COMMIT_MESSAGE" value="new updates 3/19" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>11</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

@@ -1,0 +1,420 @@
+Index: src/fitnessclub/MemberList.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\npackage fitnessclub;\nimport java.util.Scanner;\nimport java.io.File;\nimport java.io.IOException;\n\n/**\n *array-based implementation of a linear data structure to hold a list of member\n * objects. An instance of this class is a growable list with an initial array capacity of 4, and it automatically\n * increases the capacity by 4 whenever it is full. The list does not decrease in capacity. An instance of this\n * class can hold a list of members with different types of membership.\n * @author Joon Song, Connor Powell\n */\npublic class MemberList {\n    private Member[] members;\n    private int size;\n    private static final int NOT_FOUND = -1;\n\n    /**\n     * Default constructor for Member\n     */\n    public MemberList() {\n        members = new Member[4];\n        size=0;\n    }\n\n\n    /**\n     * finds member\n     * @param member to find\n     * @return int place in the array, -1 if not found\n     */\n    private int find(Member member){\n        for(int i=0; i<size; i++){\n            if(members[i].compareTo(member)==0){\n                return i;\n            }\n        }\n        return NOT_FOUND;\n    }\n\n    /**\n     * expands the array\n     */\n    private void grow(){\n        Member[] temp = new Member[members.length+4];\n        for(int i = 0; i < members.length; i++) {\n            temp[i] = members[i];\n        }\n        members = temp;\n    }\n\n    /**\n     * checks to see if array contains member\n     * @param member to be checked\n     * @return true if member exists in the array, false otherwise\n     */\n    public boolean contains(Member member) {\n        return find(member) != NOT_FOUND;\n    }\n\n    public int getSize() {return size;}\n    public Member [] getMembers() {return members;}\n\n    public Member getMember(Member member) {\n        if(contains(member))\n            return members[find(member)];\n        return null;\n    }\n    /**\n     * adds a member to the end of the array\n     * @param member to be added\n     * @return true if added, false otherwise\n     */\n    public boolean add(Member member) {\n        Date dob = member.getProfile().getDob();\n        if (!dob.isValid()) {System.out.println(\"Invalid DOB\"); return false;}\n        if (!member.getProfile().getDob().over18()) {System.out.println(\"Not over 18\"); return false;}\n        if (contains(member)) {System.out.println(\"Member already in class\");return false;}\n        if (member.getProfile() == null || member.getLocation() == null || member.getExpirationDate()==null) {\n            System.out.println(\"Missing information\");\n            return false;\n        }\n        if (size == members.length) {\n            grow();\n        }\n        members[size] = member;\n        size++;\n        return true;\n    }\n\n\n    /**\n     * removes an element from the array. Shift up to remove\n     * @param member to be removes\n     * @return true if removed, false otherwise\n     */\n    public boolean remove(Member member){\n        int index = find(member);\n        if(index==NOT_FOUND) {return false;}\n        for (int i = index; i < members.length - 1; i++) {\n            members[i] = members[i + 1];\n        }\n        members[members.length - 1] = null;\n        size--;\n        return true;\n    }\n\n    /**\n     * puts the member into the array based on their membership\n     * @param input tokens\n     * @param index index array\n     */\n    public void addTheMember(String[] input,int index){\n        String command = input[0];\n        String fname = input[1];\n        String lname = input[2];\n        String dob = input[3];\n        String expire = input[4];\n        Location location = StudioManager.getLocation(input[5]);\n        String[] dateBirth = dob.split(\"/\");\n        int month = Integer.parseInt(dateBirth[0]);\n        int day = Integer.parseInt(dateBirth[1]);\n        int year = Integer.parseInt(dateBirth[2]);\n        String[] date = expire.split(\"/\");\n        int month1 = Integer.parseInt(date[0]);\n        int day1 = Integer.parseInt(date[1]);\n        int year1 = Integer.parseInt(date[2]);\n        Date dateOfBirth = new Date(month, day, year);\n        Date expires = new Date(month1, day1, year1);\n        Profile profile = new Profile(fname, lname, dateOfBirth);\n        switch(command){\n            case \"B\" -> {\n                Basic basic = new Basic(profile,expires,location);\n                members[index] = (basic);\n                System.out.println(basic);\n            }\n            case \"F\" -> {\n                Family family = new Family(profile,expires,location);\n                members[index] = (family);\n                System.out.println(family);\n            }\n            case \"P\" -> {\n                Premium premium = new Premium(profile,expires,location);\n                members[index] = (premium);\n                System.out.println(premium);\n            }\n        }\n        grow();\n        size++;\n    }\n    /**\n     * Loads the list of members from text file\n     * @param file to be loaded\n     * @throws IOException error\n     */\n    public void load(File file) throws IOException{\n        if(!file.exists() || !file.isFile()) {throw new IOException();}\n        System.out.println(\"-list of members loaded-\");\n        Scanner scanner = new Scanner(file);\n        int index=0;\n        if(size==members.length) {grow();}\n        do{\n            String line = scanner.nextLine();\n            String[] tokens = line.split(\"\\\\s\");\n            addTheMember(tokens, index);\n            index++;\n        }while(scanner.hasNextLine());\n        System.out.println(\"-end of list-\");\n    }\n\n\n    /**\n     * sort by county, then zipcode\n     */\n    public void printByLocation(){\n        if(members.length==0){\n            System.out.println(\"Member database is empty\");\n        }\n        if(size==1){\n            System.out.println(members[0]);\n            return;\n        }\n        int n=size;\n        for (int i = 0; i < n - 1; i++) {\n            for (int j = i + 1; j < n - i - 1; j++) {\n                Member m1 = members[i];\n                Member m2 = members[j];\n                if (m1.getLocation().getCounty().compareTo(m2.getLocation().getCounty()) > 0) {\n                    members[i] = m2;\n                    members[j] = m1;\n                } else if (m1.getLocation().getCounty().compareTo(m2.getLocation().getCounty()) == 0) {\n                    if (m1.getLocation().getZipCode().compareTo(m2.getLocation().getZipCode()) > 0) {\n                        members[i] = m2;\n                        members[j] = m1;\n                    }\n                }\n            }\n        }\n        for (int i = 0; i < size; i++) {\n            System.out.println(members[i].toString());\n        }\n    }\n\n\n    /**\n     * sort by member profile. Last name first, then first name, then dob.\n     */\n    public void printByMembers(){\n        if(size==0){\n            System.out.println(\"Member database is empty\");\n            return;\n        }\n        if(size==1){\n            System.out.println(members[0]);\n            return;\n        }\n        int n = size;\n        for (int i = 0; i < n -1 ; i++) {\n            for (int j = i + 1; j < n - i - 1; j++) {\n                Member m1 = members[i];\n                Member m2 = members[j];\n                if (m1.getProfile().getLastName().compareTo(m2.getProfile().getLastName()) > 0) {\n                    members[i] = m2;\n                    members[j] = m1;\n                }else if (m1.getProfile().getLastName().compareTo(m2.getProfile().getLastName()) == 0) {\n                    if (m1.getProfile().getFirstName().compareTo(m2.getProfile().getFirstName()) > 0) {\n                        members[i] = m2;\n                        members[j] = m1;\n                    }else if (m1.getProfile().getFirstName().compareTo(m2.getProfile().getFirstName()) == 0) {\n                        if (m1.getProfile().getDob().compareTo(m2.getProfile().getDob()) > 0) {\n                            members[i] = m2;\n                            members[j] = m1;\n                        }\n                    }\n                }\n            }\n        }\n        for (int i = 0; i < size; i++) {\n            System.out.println(members[i].toString());\n        }\n    }\n\n\n    /**\n     * print the array as is with the next due amounts\n     */\n    public void printFees(){\n        for (int i=0; i<size; i++) {\n            System.out.println(members[i] + \" [next due: $\" + members[i].bill() + \"]\");\n        }\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/fitnessclub/MemberList.java b/src/fitnessclub/MemberList.java
+--- a/src/fitnessclub/MemberList.java	
++++ b/src/fitnessclub/MemberList.java	
+@@ -59,9 +59,23 @@
+         return find(member) != NOT_FOUND;
+     }
+ 
++    /**
++     * getter method
++     * @return size of memberList
++     */
+     public int getSize() {return size;}
+-    public Member [] getMembers() {return members;}
+ 
++    /**
++     * getter method
++     * @return member array
++     */
++    public Member[] retainMembers() {return members;}
++
++    /**
++     * getter method
++     * @param member member
++     * @return member
++     */
+     public Member getMember(Member member) {
+         if(contains(member))
+             return members[find(member)];
+@@ -74,9 +88,9 @@
+      */
+     public boolean add(Member member) {
+         Date dob = member.getProfile().getDob();
+-        if (!dob.isValid()) {System.out.println("Invalid DOB"); return false;}
+-        if (!member.getProfile().getDob().over18()) {System.out.println("Not over 18"); return false;}
+-        if (contains(member)) {System.out.println("Member already in class");return false;}
++        if (!dob.isValid()) {return false;}
++        if (!member.getProfile().getDob().over18()) {return false;}
++        if (contains(member)) {return false;}
+         if (member.getProfile() == null || member.getLocation() == null || member.getExpirationDate()==null) {
+             System.out.println("Missing information");
+             return false;
+@@ -197,9 +211,12 @@
+                 }
+             }
+         }
++        System.out.println("-Members printed by location-");
+         for (int i = 0; i < size; i++) {
+             System.out.println(members[i].toString());
+         }
++        System.out.println("-end of list-");
++        System.out.println();
+     }
+ 
+ 
+@@ -236,9 +253,12 @@
+                 }
+             }
+         }
++        System.out.println("-Members printed by profile-");
+         for (int i = 0; i < size; i++) {
+             System.out.println(members[i].toString());
+         }
++        System.out.println("-end of list-");
++        System.out.println();
+     }
+ 
+ 
+@@ -246,9 +266,12 @@
+      * print the array as is with the next due amounts
+      */
+     public void printFees(){
++        System.out.println("-Members printed by fees-");
+         for (int i=0; i<size; i++) {
+             System.out.println(members[i] + " [next due: $" + members[i].bill() + "]");
+         }
++        System.out.println("-end of list-");
++        System.out.println();
+     }
+ 
+ }
+Index: src/fitnessclub/StudioManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\npackage fitnessclub;\nimport java.io.IOException;\nimport java.util.Scanner;\nimport java.io.File;\n\n/**\n * class used to run the project\n * @author Joon Song, Connor Powell\n */\npublic class StudioManager{\n\n    private MemberList members;\n    private Schedule classes;\n\n    /**\n     * Initialize members and schedule\n     */\n    public StudioManager() {\n        members = new MemberList();\n        classes = new Schedule();\n    }\n\n\n    /**\n     * gets type of member\n     *\n     */\n    private Member getMembership(String membership, Profile profile, Location location){\n        Member member;\n        switch (membership) {\n            case \"AB\":\n                Date expire = Date.basicExpire();\n                member = new Basic(profile, expire, location);\n                break;\n            case \"AF\":\n                Date expire2 = Date.familyExpire();\n                member = new Family(profile, expire2,location);\n                break;\n            case \"AP\":\n                Date expire3 = Date.premiumExpire();\n                member = new Premium(profile, expire3, location);\n                break;\n            default:\n                System.out.println(\"Invalid membership type\");\n                return null;\n        }\n        return member;\n    }\n\n    /**\n     * creates a family member from input\n     * @param input from input\n     */\n    public void addMember(String[] input){\n        if(input.length<5){\n            System.out.println(\"not enough data tokens\");\n            return;\n        }\n        String membership = input[0];\n        String fname = input[1];\n        String lname = input[2];\n        String dob = input[3];\n        Location location = getLocation(input[4]);\n        if(location==null){\n            System.out.println(input[4] + \" invalid location\");\n            return;\n        }\n        String[] dateBirth = dob.split(\"/\");\n        int month, day, year;\n        try {\n            month = Integer.parseInt(dateBirth[0]);\n            day = Integer.parseInt(dateBirth[1]);\n            year = Integer.parseInt(dateBirth[2]);\n        } catch (NumberFormatException e) {\n            System.out.println(dob + \" Contains characters\");\n            return;\n        }\n        Date dateOfBirth = new Date(month,day,year);\n        Profile profile = new Profile(fname,lname,dateOfBirth);\n        Member member = getMembership(membership,profile,location);\n        if(member==null) return;\n        boolean result = members.add(member);\n        if(!result) {\n            invalidAddInput(member);\n        }\n        else{\n            System.out.println(fname + \" \" + lname + \" has been added\");\n        }\n    }\n\n    /**\n     * creates a basic member from input\n     * @param input from input\n     */\n    public void removeMember(String[] input){\n        if(input.length<4){\n            System.out.println(\"not enough data tokens\");\n            return;\n        }\n        String fname = input[1];\n        String lname = input[2];\n        String dob = input[3];\n        String[] dateBirth = dob.split(\"/\");\n        int month, day, year;\n        try {\n            month = Integer.parseInt(dateBirth[0]);\n            day = Integer.parseInt(dateBirth[1]);\n            year = Integer.parseInt(dateBirth[2]);\n        } catch (NumberFormatException e) {\n            System.out.println(dob + \" Contains characters\");\n            return;\n        }\n        Date dateOfBirth = new Date(month,day,year);\n        Profile profile = new Profile(fname, lname, dateOfBirth);\n        Member member = new Member(profile, null, null);\n        boolean result = members.remove(member);\n        if(!result){\n            System.out.println(fname + \" \" + lname + \" is not in the database\");\n        }else{\n            System.out.println(fname +\" \"+lname + \" removed from database\");\n        }\n    }\n\n    /**\n     * input the location as a string and turns it into Location from enum class\n     * @param input String input\n     * @return Location\n     */\n    public static Location getLocation(String input){\n        if(input.equalsIgnoreCase(\"BRIDGEWATER\")) {return Location.Bridgewater;}\n        if(input.equalsIgnoreCase(\"EDISON\")) {return Location.Edison;}\n        if(input.equalsIgnoreCase(\"FRANKLIN\")) {return Location.Franklin;}\n        if(input.equalsIgnoreCase(\"PISCATAWAY\")) {return Location.Piscataway;}\n        if(input.equalsIgnoreCase(\"SOMERVILLE\")) {return Location.Somerville;}\n        return null;\n    }\n\n    /**\n     * input the offer as a string and convert it to Offer from enum class\n     * @param input String input\n     * @return Offer\n     */\n    public static Offer getOffer(String input){\n        if(input.equalsIgnoreCase(\"Cardio\")) {return Offer.Cardio;}\n        if(input.equalsIgnoreCase(\"Pilates\")) {return Offer.Pilates;}\n        if(input.equalsIgnoreCase(\"Spinning\")) {return Offer.Spinning;}\n        return null;\n    }\n\n    /**\n     * input the instructor as a string and get Instructor from enum class\n     * @param input String input\n     * @return instructor\n     */\n    public static Instructor getInstructor(String input){\n        if(input.equalsIgnoreCase(\"Jennifer\")) {return Instructor.Jennifer;}\n        if(input.equalsIgnoreCase(\"Kim\")) {return Instructor.Kim;}\n        if(input.equalsIgnoreCase(\"Denise\")) {return Instructor.Denise;}\n        if(input.equalsIgnoreCase(\"Davis\")) {return Instructor.Davis;}\n        if(input.equalsIgnoreCase(\"Emma\")) {return Instructor.Emma;}\n        return null;\n    }\n\n    /**\n     * input time of day as a string and get Time from enum class\n     * @param input String input\n     * @return Time\n     */\n    public static Time getTime(String input){\n        if(input.equalsIgnoreCase(\"Morning\")) {return Time.MORNING;}\n        if(input.equalsIgnoreCase(\"Afternoon\")) {return Time.AFTERNOON;}\n        if(input.equalsIgnoreCase(\"Evening\")) {return Time.EVENING;}\n        return null;\n    }\n\n    /**\n     * Helper method that checks whether a member is valid to add\n     * @param member to be tested if it is valid\n     */\n    private void invalidAddInput(Member member) {\n        if(member.getProfile().getDob().todayOrAfter()) {\n            System.out.println(\"DOB: \" + member.getProfile().getDob().toString() + \" cannot be today or a future date!\");\n            return;\n        }\n        if(!member.getProfile().getDob().isValid()) {\n            System.out.println(\"DOB: \" + member.getProfile().getDob().toString() + \" invalid calendar date!\");\n            return;\n        }\n        if(!member.getProfile().getDob().over18()){\n            System.out.println(\"DOB: \" + member.getProfile().getDob().toString() + \" must be 18 or older!\");\n            return;\n        }\n        if(member.getLocation()==null){\n            System.out.println(member.getLocation() + \" invalid studio location!\");\n            return;\n        }\n        if(members.contains(member)){\n            System.out.println(member.getProfile().getFirstName() + \" \" + member.getProfile().getLastName() + \" is already in the member database\");\n        }\n    }\n\n    /**\n     * Print members and classes\n     */\n    public void printMAndC(){\n        File file = new File(\"/Users/joonsong/Desktop/Software Methodology /FitnessClub/memberList.txt\");\n        try {members.load(file);}\n        catch (IOException e) {}\n\n        File file1 = new File(\"/Users/joonsong/Desktop/Software Methodology /FitnessClub/classSchedule.txt\");\n        try {classes.load(file1);}\n        catch (IOException e){}\n    }\n\n\n    /**\n     * helper method for R\n     */\n    public void register(String[] input) {\n        if (input.length < 7) {System.out.println(\"missing data tokens\");return;}\n        Offer typeClass = getOffer(input[1]);\n        if (typeClass == null) {System.out.println(\"Class doesn't exist\");return;}\n        Instructor instructor = getInstructor(input[2]);\n        if (instructor == null) {System.out.println(\"instructor doesn't exist\");return;}\n        Location city = getLocation(input[3]);\n        if (city == null) {System.out.println(\"Location doesn't exist\");return;}\n        String fname = input[4];\n        String lname = input[5];\n        String dob = input[6];\n        String[] dateBirth = dob.split(\"/\");\n        int month = Integer.parseInt(dateBirth[0]);\n        int day = Integer.parseInt(dateBirth[1]);\n        int year = Integer.parseInt(dateBirth[2]);\n        Date date = new Date(month, day, year);\n        Profile profile = new Profile(fname, lname, date);\n        Member member = new Member(profile, date, city);\n        if (!members.contains(member)) {System.out.println(\"member isn't in the database\");return;}\n        FitnessClass temp = new FitnessClass(typeClass, instructor, city, null, null, null);\n        if (!classes.contains(temp)) {System.out.println(\"Class doesn't exist\");return;}\n        FitnessClass fclass = classes.getFitnessClasses()[classes.find(temp)];\n\n        FitnessClass[] list = classes.getFitnessClasses();\n        for (int i = 0; i < list.length && list[i] != null; i++) {\n            if (list[i].getMembers().contains(member) && list[i].getTime().getHour() == fclass.getTime().getHour() &&\n                    list[i].getTime().getMinute() == fclass.getTime().getMinute()) {\n                if(list[i].equals(fclass)) break;\n                System.out.println(\"Member has a time conflict\");\n            }\n        }\n        Member member1 = members.getMember(member);\n        if(!fclass.getMembers().add(member1)) return;\n        if(member1 instanceof Basic) {\n            if(fclass.getStudio() != city) {\n                System.out.println(\"Basic members can only attend classes from their home studio\");\n                return;\n            }\n            ((Basic) member1).setNumClasses(((Basic) member1).getNumClasses() + 1);\n        }\n        System.out.println(\"Member added to class successfully\");\n    }\n\n    /**\n     * helper method for U function\n     */\n    public void removeFromClass(String[] tokens){\n        if(tokens.length<5){\n            System.out.println(\"missing data tokens\");\n            return;\n        }\n        Offer typeClass = getOffer(tokens[1]);\n        String fname = tokens[2];\n        String lname = tokens[3];\n        String dob = tokens[4];\n        String[] dateBirth = dob.split(\"/\");\n        int month = Integer.parseInt(dateBirth[0]);\n        int day = Integer.parseInt(dateBirth[1]);\n        int year = Integer.parseInt(dateBirth[2]);\n        Date date = new Date(month, day, year);\n        Profile profile = new Profile(fname,lname,date);\n        Member member = new Member(profile, null,null);\n        FitnessClass[] fitnessClasses = classes.getFitnessClasses();\n        for(int i=0; i< classes.getNumClasses(); i++){\n            FitnessClass currentClass = fitnessClasses[i];\n            if(currentClass.getClassInfo() == typeClass){\n                MemberList classMembers = currentClass.getMembers();\n                if(classMembers.contains(member)){\n                    classMembers.remove(member);\n                }\n            }\n        }\n    }\n\n    /**\n     * helper method for RG\n     */\n    public void addGuest(String[] tokens){\n        if(tokens.length<7){\n            System.out.println(\"missing data tokens\");\n            return;\n        }\n        Offer typeClass = getOffer(tokens[1]);\n        if (typeClass == null) {System.out.println(\"Class doesn't exist\");return;}\n        Instructor instructor = getInstructor(tokens[2]);\n        if (instructor == null) {System.out.println(\"instructor doesn't exist\");return;}\n        Location city = getLocation(tokens[3]);\n        if (city == null) {System.out.println(\"Location doesn't exist\");return;}\n        String fname = tokens[4], lname = tokens[5], dob = tokens[6];\n        String[] dateBirth = dob.split(\"/\");\n        int month = Integer.parseInt(dateBirth[0]);\n        int day = Integer.parseInt(dateBirth[1]);\n        int year = Integer.parseInt(dateBirth[2]);\n        Date date = new Date(month, day, year);\n        Profile profile = new Profile(fname, lname, date);\n        Member member = new Member(profile, date, city);\n        if (!members.contains(member)) {System.out.println(\"member isn't in the database\");return;}\n        FitnessClass temp = new FitnessClass(typeClass, instructor, city, null, null, null);\n        if (!classes.contains(temp)) {System.out.println(\"Class doesn't exist\");return;}\n        FitnessClass fclass = classes.getFitnessClasses()[classes.find(temp)];\n        Member member1 = members.getMember(member);\n        if(member1 instanceof Basic) {System.out.println(\"Basic members cant add guests\");}\n        else if(member1 instanceof Family){\n            if(fclass.getStudio() != city) {System.out.println(\"Family members can only add guests from their home studio\"); return;}\n            else{\n                if(((Family) member1).containsGuest()){System.out.println(\"This member already has a guest\"); return;}\n                else{((Family) member1).addNewGuest();}\n            }\n        }else{\n            if(((Premium) member1).numGuests()<1){System.out.println(\"You already have the max amount of guests\"); return;}\n            else{\n                ((Premium) member1).addAGuest();\n            }\n        }\n    }\n\n    /**\n     * helper method for UG\n     */\n    public void removeGuest(String[] tokens){\n        if(tokens.length<7){\n            System.out.println(\"missing data tokens\");\n            return;\n        }\n        Offer typeClass = getOffer(tokens[1]);\n        if (typeClass == null) {System.out.println(\"Class doesn't exist\");return;}\n        Instructor instructor = getInstructor(tokens[2]);\n        if (instructor == null) {System.out.println(\"instructor doesn't exist\");return;}\n        Location city = getLocation(tokens[3]);\n        if (city == null) {System.out.println(\"Location doesn't exist\");return;}\n        String fname = tokens[4], lname = tokens[5], dob = tokens[6];\n        String[] dateBirth = dob.split(\"/\");\n        int month = Integer.parseInt(dateBirth[0]);\n        int day = Integer.parseInt(dateBirth[1]);\n        int year = Integer.parseInt(dateBirth[2]);\n        Date date = new Date(month, day, year);\n        Profile profile = new Profile(fname, lname, date);\n        Member member = new Member(profile, date, city);\n        if (!members.contains(member)) {System.out.println(\"member isn't in the database\");return;}\n        FitnessClass temp = new FitnessClass(typeClass, instructor, city, null, null, null);\n        if (!classes.contains(temp)) {System.out.println(\"Class doesn't exist\");return;}\n        FitnessClass fclass = classes.getFitnessClasses()[classes.find(temp)];\n        Member member1 = members.getMember(member);\n        if(member1 instanceof Basic) {System.out.println(\"Basic members don't have any guests\");}\n        else if(member1 instanceof Family){\n            if(fclass.getStudio() != city) {System.out.println(\"Family members can only have guests from their home studio\");}\n            else{\n                if(!((Family) member1).containsGuest()){System.out.println(\"there is no guest to remove\");}\n                else{((Family) member1).removeGuest();}\n            }\n        }else{\n            if(((Premium) member1).numGuests()>2){System.out.println(\"there is no guest to remove\");}\n            else{\n                ((Premium) member1).removeAGuest();\n            }\n        }\n    }\n\n\n    /**\n     * run the project\n     */\n    public void run (){\n        printMAndC();\n        Scanner scanner = new Scanner(System.in);\n        System.out.println(\"StudioManager is up and running.\");\n        outerLoop: do{\n            String line = scanner.nextLine();\n            String[] tokens = line.split(\"\\\\s\");\n            String command = tokens[0];\n            switch(command){\n                case \"AB\",\"AF\",\"AP\" -> addMember(tokens);\n                case \"C\" -> removeMember(tokens);\n                case \"S\" -> classes.printSchedule();\n                case \"PM\" -> members.printByMembers();\n                case \"PC\" -> members.printByLocation();\n                case \"PF\" -> members.printFees();\n                case \"R\" -> register(tokens);\n                case \"U\" -> removeFromClass(tokens);\n                case \"RG\" -> addGuest(tokens);\n                case \"UG\" -> {/*remove guest from class*/}\n                case \"Q\" -> {break outerLoop;}\n                default -> System.out.println(command + \" is an Invalid Command!\");\n            }\n        }while(scanner.hasNextLine());\n        scanner.close();\n        System.out.println(\"StudioManager terminated.\");\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/fitnessclub/StudioManager.java b/src/fitnessclub/StudioManager.java
+--- a/src/fitnessclub/StudioManager.java	
++++ b/src/fitnessclub/StudioManager.java	
+@@ -1,8 +1,8 @@
+-
+ package fitnessclub;
+ import java.io.IOException;
+ import java.util.Scanner;
+ import java.io.File;
++import java.util.Calendar;
+ 
+ /**
+  * class used to run the project
+@@ -220,58 +220,62 @@
+     public void register(String[] input) {
+         if (input.length < 7) {System.out.println("missing data tokens");return;}
+         Offer typeClass = getOffer(input[1]);
+-        if (typeClass == null) {System.out.println("Class doesn't exist");return;}
++        if (typeClass == null) {System.out.println(input[1] + " - Class doesn't exist");return;}
+         Instructor instructor = getInstructor(input[2]);
+-        if (instructor == null) {System.out.println("instructor doesn't exist");return;}
++        if (instructor == null) {System.out.println(input[2] + " - instructor doesn't exist");return;}
+         Location city = getLocation(input[3]);
+-        if (city == null) {System.out.println("Location doesn't exist");return;}
+-        String fname = input[4];
+-        String lname = input[5];
+-        String dob = input[6];
++        if (city == null) {System.out.println(input[3] + " - invalid studio location");return;}
++        String fname = input[4], lname = input[5], dob = input[6];
+         String[] dateBirth = dob.split("/");
+-        int month = Integer.parseInt(dateBirth[0]);
+-        int day = Integer.parseInt(dateBirth[1]);
+-        int year = Integer.parseInt(dateBirth[2]);
++        int month = Integer.parseInt(dateBirth[0]), day = Integer.parseInt(dateBirth[1]), year = Integer.parseInt(dateBirth[2]);
+         Date date = new Date(month, day, year);
+         Profile profile = new Profile(fname, lname, date);
+-        Member member = new Member(profile, date, city);
+-        if (!members.contains(member)) {System.out.println("member isn't in the database");return;}
++        Member member = new Member(profile, null, city);
++        if (!members.contains(member)) {System.out.println(profile + " - member isn't in the database");return;}
+         FitnessClass temp = new FitnessClass(typeClass, instructor, city, null, null, null);
+         if (!classes.contains(temp)) {System.out.println("Class doesn't exist");return;}
+         FitnessClass fclass = classes.getFitnessClasses()[classes.find(temp)];
+-
++        Member member1 = members.getMember(member);
++        if(fclass.getMembers().contains(member)) {System.out.println(fname + " " + lname + " is already in the class");}
+         FitnessClass[] list = classes.getFitnessClasses();
+         for (int i = 0; i < list.length && list[i] != null; i++) {
+             if (list[i].getMembers().contains(member) && list[i].getTime().getHour() == fclass.getTime().getHour() &&
+                     list[i].getTime().getMinute() == fclass.getTime().getMinute()) {
+                 if(list[i].equals(fclass)) break;
+-                System.out.println("Member has a time conflict");
++                System.out.println("Time Conflict - " + fname + " " +  lname + " is in another class held at " + list[i].
++                        getTime().toString() + " - " + list[i].getInstructor().toString() +" " +  list[i].getTime().
++                        toString() + ", " + list[i].getStudio().getCity().toUpperCase());
+             }
+         }
+-        Member member1 = members.getMember(member);
++        String output=null;
++        if(!member1.getExpirationDate().todayOrAfter()){System.out.println(profile + " membership expired"); return;}
+         if(!fclass.getMembers().add(member1)) return;
+-        if(member1 instanceof Basic) {
+-            if(fclass.getStudio() != city) {
+-                System.out.println("Basic members can only attend classes from their home studio");
+-                return;
+-            }
++        if(member1 instanceof Family){output = "Family";}
++        if(member1 instanceof Premium){output= "Premium";}
++        if(member1 instanceof Basic) {output = "Basic";
++            if(fclass.getStudio() != city) {System.out.println("Basic members can only attend classes from their home studio");return;}
+             ((Basic) member1).setNumClasses(((Basic) member1).getNumClasses() + 1);
+         }
+-        System.out.println("Member added to class successfully");
++        System.out.println(fname + " " + lname + " is attending a class at " + fclass.getStudio().getCity()+ " - ["+
++                output+ "] home studio at " + member1.getLocation().getCity().toUpperCase());
++        System.out.println(fname + " " + lname + " attendance recorded " + fclass.getClassInfo().toString().toUpperCase()
++                + " at " + fclass.getStudio().toString());
+     }
+ 
+     /**
+      * helper method for U function
+      */
+     public void removeFromClass(String[] tokens){
+-        if(tokens.length<5){
++        if(tokens.length<7){
+             System.out.println("missing data tokens");
+             return;
+         }
+         Offer typeClass = getOffer(tokens[1]);
+-        String fname = tokens[2];
+-        String lname = tokens[3];
+-        String dob = tokens[4];
++        Instructor instructor = getInstructor(tokens[2]);
++        Location city = getLocation(tokens[3]);
++        String fname = tokens[4];
++        String lname = tokens[5];
++        String dob = tokens[6];
+         String[] dateBirth = dob.split("/");
+         int month = Integer.parseInt(dateBirth[0]);
+         int day = Integer.parseInt(dateBirth[1]);
+@@ -279,15 +283,15 @@
+         Date date = new Date(month, day, year);
+         Profile profile = new Profile(fname,lname,date);
+         Member member = new Member(profile, null,null);
+-        FitnessClass[] fitnessClasses = classes.getFitnessClasses();
+-        for(int i=0; i< classes.getNumClasses(); i++){
+-            FitnessClass currentClass = fitnessClasses[i];
+-            if(currentClass.getClassInfo() == typeClass){
+-                MemberList classMembers = currentClass.getMembers();
+-                if(classMembers.contains(member)){
+-                    classMembers.remove(member);
+-                }
+-            }
++        FitnessClass temp = new FitnessClass(typeClass, instructor, city, null, null, null);
++        if (!classes.contains(temp)) {System.out.println("Class doesn't exist");return;}
++        FitnessClass fclass = classes.getFitnessClasses()[classes.find(temp)];
++        MemberList classMembers = fclass.getMembers();
++        if(classMembers.contains(member)){
++            classMembers.remove(member);
++            System.out.println(fname + " " + lname + " is removed from " + fclass.printClass());
++        }else{
++            System.out.println(fname + " " + lname + " is not in " + fclass.printClass());
+         }
+     }
+ 
+@@ -300,7 +304,7 @@
+             return;
+         }
+         Offer typeClass = getOffer(tokens[1]);
+-        if (typeClass == null) {System.out.println("Class doesn't exist");return;}
++        if (typeClass == null) {System.out.println("offer doesn't exist");return;}
+         Instructor instructor = getInstructor(tokens[2]);
+         if (instructor == null) {System.out.println("instructor doesn't exist");return;}
+         Location city = getLocation(tokens[3]);
+@@ -320,13 +324,13 @@
+         Member member1 = members.getMember(member);
+         if(member1 instanceof Basic) {System.out.println("Basic members cant add guests");}
+         else if(member1 instanceof Family){
+-            if(fclass.getStudio() != city) {System.out.println("Family members can only add guests from their home studio"); return;}
++            if(fclass.getStudio() != city) {System.out.println("Family members can only add guests from their home studio");}
+             else{
+-                if(((Family) member1).containsGuest()){System.out.println("This member already has a guest"); return;}
++                if(((Family) member1).containsGuest()){System.out.println("This member already has a guest");}
+                 else{((Family) member1).addNewGuest();}
+             }
+         }else{
+-            if(((Premium) member1).numGuests()<1){System.out.println("You already have the max amount of guests"); return;}
++            if(((Premium) member1).numGuests()<1){System.out.println("You already have the max amount of guests");}
+             else{
+                 ((Premium) member1).addAGuest();
+             }
+@@ -342,11 +346,11 @@
+             return;
+         }
+         Offer typeClass = getOffer(tokens[1]);
+-        if (typeClass == null) {System.out.println("Class doesn't exist");return;}
++        if (typeClass == null) {System.out.println(tokens[1] + " Class doesn't exist");return;}
+         Instructor instructor = getInstructor(tokens[2]);
+-        if (instructor == null) {System.out.println("instructor doesn't exist");return;}
++        if (instructor == null) {System.out.println(tokens[2] + " instructor doesn't exist");return;}
+         Location city = getLocation(tokens[3]);
+-        if (city == null) {System.out.println("Location doesn't exist");return;}
++        if (city == null) {System.out.println(tokens[3] + " Location doesn't exist");return;}
+         String fname = tokens[4], lname = tokens[5], dob = tokens[6];
+         String[] dateBirth = dob.split("/");
+         int month = Integer.parseInt(dateBirth[0]);
+@@ -355,12 +359,12 @@
+         Date date = new Date(month, day, year);
+         Profile profile = new Profile(fname, lname, date);
+         Member member = new Member(profile, date, city);
+-        if (!members.contains(member)) {System.out.println("member isn't in the database");return;}
++        if (!members.contains(member)) {System.out.println(fname + " " + lname + " isn't in the database");return;}
+         FitnessClass temp = new FitnessClass(typeClass, instructor, city, null, null, null);
+         if (!classes.contains(temp)) {System.out.println("Class doesn't exist");return;}
+         FitnessClass fclass = classes.getFitnessClasses()[classes.find(temp)];
+         Member member1 = members.getMember(member);
+-        if(member1 instanceof Basic) {System.out.println("Basic members don't have any guests");}
++        if(member1 instanceof Basic) {System.out.println("Basic members cant have any guests");}
+         else if(member1 instanceof Family){
+             if(fclass.getStudio() != city) {System.out.println("Family members can only have guests from their home studio");}
+             else{
+@@ -375,7 +379,6 @@
+         }
+     }
+ 
+-
+     /**
+      * run the project
+      */
+@@ -397,9 +400,9 @@
+                 case "R" -> register(tokens);
+                 case "U" -> removeFromClass(tokens);
+                 case "RG" -> addGuest(tokens);
+-                case "UG" -> {/*remove guest from class*/}
++                case "UG" -> removeGuest(tokens);
+                 case "Q" -> {break outerLoop;}
+-                default -> System.out.println(command + " is an Invalid Command!");
++                default -> System.out.println(command + " is an Invalid Command!" + "\n");
+             }
+         }while(scanner.hasNextLine());
+         scanner.close();
+Index: src/fitnessclub/Member.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\npackage fitnessclub;\npublic class Member implements Comparable <Member>{\n    private Profile profile;\n    private Date expire;\n    private Location homeStudio;\n\n    /**\n     * constructor\n     */\n    public Member(Profile profile, Date expire, Location homeStudio){\n        this.profile = profile;\n        this.expire = expire;\n        this.homeStudio=homeStudio;\n    }\n\n    /**\n     * getter method\n     * @return homeStudio, and homeStudio will be null if an invalid input is entered\n     */\n    public Location getLocation() {return this.homeStudio;}\n\n    /**\n     * getter method\n     * @return expire date\n     */\n    public Date getExpirationDate() {return this.expire;}\n\n    /**\n     * getter method\n     * @return profile\n     */\n    public Profile getProfile() {return this.profile;}\n\n    /**\n     * checks to see if 2 members are the same member\n     * @param obj member to be compared\n     * @return true if same, false otherwise\n     */\n    @Override\n    public boolean equals(Object obj) {\n        if(obj instanceof Member) {\n            Member member = (Member) obj;\n            return this.profile.equals(member.profile);\n        }\n        return false;\n    }\n\n    /**\n     * compares 2 members\n     * @param member the object to be compared.\n     * @return\n     */\n    public int compareTo(Member member){\n        if(this.profile.compareTo(member.profile)>0) {return 1;}\n        if(this.profile.compareTo(member.profile)<0) {return -1;}\n        return 0;\n    }\n\n    /**\n     * member to string\n     * @return String\n     */\n    @Override\n    public String toString(){\n        return this.profile.toString() + \", Membership expired \" + this.expire.toString() + \", Home Studio:\" +\n                this.homeStudio.getCity() + \",\" + this.homeStudio.getZipCode() + \",\" + this.homeStudio.getCounty();\n    }\n\n\n    /**\n     * this method is used to obtain the next due amount\n     * @return double amount\n     */\n    public double bill(){\n        return 0.0;\n    }\n\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/fitnessclub/Member.java b/src/fitnessclub/Member.java
+--- a/src/fitnessclub/Member.java	
++++ b/src/fitnessclub/Member.java	
+@@ -1,4 +1,3 @@
+-
+ package fitnessclub;
+ public class Member implements Comparable <Member>{
+     private Profile profile;
+@@ -57,6 +56,7 @@
+         return 0;
+     }
+ 
++
+     /**
+      * member to string
+      * @return String
+Index: src/fitnessclub/FitnessClass.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\npackage fitnessclub;\n/**\n * class\n */\npublic class FitnessClass{\n    private Offer classInfo;\n    private Instructor instructor;\n    private Location studio;\n    private Time time;\n    private MemberList members;\n    private MemberList guests;\n\n    /**\n     * constructor\n     */\n    public FitnessClass(Offer classInfo, Instructor instructor, Location studio, Time time,\n                        MemberList members, MemberList guests){\n        this.classInfo=classInfo;\n        this.instructor=instructor;\n        this.studio=studio;\n        this.time=time;\n        this.members=members;\n        this.guests=guests;\n    }\n\n    /**\n     * getter method\n     * @return class info\n     */\n    public Offer getClassInfo() {return this.classInfo;}\n\n    /**\n     * getter method\n     * @return instructor\n     */\n    public Instructor getInstructor() {return this.instructor;}\n\n    /**\n     * getter method\n     * @return studio\n     */\n    public Location getStudio() {return this.studio;}\n\n    /**\n     * getter method\n     * @return time\n     */\n    public Time getTime() {return this.time;}\n\n    /**\n     * getter method\n     * @return members\n     */\n    public MemberList getMembers() {return this.members;}\n\n    /**\n     * getter method\n     * @return guests\n     */\n    public MemberList getGuests() {return this.guests;}\n\n    /**\n     * class to string\n     * @return string class\n     */\n    @Override\n    public String toString(){\n        return this.classInfo.toString().toUpperCase() + \"-\" + this.instructor.toString().toUpperCase() + \", \" +\n                this.time +  \", \" + this.studio.getCity().toUpperCase();\n    }\n\n    /**\n     * Determines whet\n     * @param fclass the class to compare to.\n     * @return true if the instructor, the classinfo, and the location are the same, false otherwise\n     */\n    public boolean equals(FitnessClass fclass) {\n        return fclass.getInstructor() == this.getInstructor() && fclass.getClassInfo() == this.classInfo\n                && fclass.getStudio() == this.getStudio();\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/fitnessclub/FitnessClass.java b/src/fitnessclub/FitnessClass.java
+--- a/src/fitnessclub/FitnessClass.java	
++++ b/src/fitnessclub/FitnessClass.java	
+@@ -70,6 +70,14 @@
+                 this.time +  ", " + this.studio.getCity().toUpperCase();
+     }
+ 
++    /**
++     * print to string but without classinfo
++     */
++    public String printClass(){
++        return this.instructor.toString().toUpperCase() + ", " + this.time +  ", " + this.studio.getCity().toUpperCase()
++                +", " + this.studio.getZipCode() + ", " +  this.studio.getCounty().toUpperCase();
++    }
++
+     /**
+      * Determines whet
+      * @param fclass the class to compare to.
+Index: src/fitnessclub/Location.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package fitnessclub;\n\n/**\n *Enum class defining the studio locations\n * @author Joon Song, Connor Powell\n */\npublic enum Location {\n\n    Bridgewater(\"Bridgewater\",\"08807\",\"Somerset County\"),\n    Edison(\"Edison\" , \"08837\", \"Middlesex County\"),\n    Franklin(\"Franklin\", \"08873\", \"Somerset County\"),\n    Piscataway(\"Piscataway\", \"08873\", \"Middlesex County\"),\n    Somerville(\"Somerville\", \"08876\", \"Somerset County\");\n\n    private final String city;\n    private final String zipCode;\n    private final String county;\n\n    /**\n     * constructor\n     * @param city city\n     * @param zipCode zip\n     * @param county county\n     */\n    Location(String city, String zipCode, String county) {\n        this.city = city;\n        this.zipCode = zipCode;\n        this.county = county;\n    }\n\n    /**\n     * getter method\n     * @return city\n     */\n    public String getCity() {return city;}\n\n    /**\n     * getter method\n     * @return zipcode\n     */\n    public String getZipCode() {return zipCode;}\n\n    /**\n     * getter method\n     * @return county\n     */\n    public String getCounty() {return county;}\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/fitnessclub/Location.java b/src/fitnessclub/Location.java
+--- a/src/fitnessclub/Location.java	
++++ b/src/fitnessclub/Location.java	
+@@ -45,4 +45,12 @@
+      * @return county
+      */
+     public String getCounty() {return county;}
++
++    /**
++     * location to string
++     */
++    @Override
++    public String toString(){
++        return this.city.toUpperCase() + ", " + this.zipCode + ", " + this.county.toUpperCase();
++    }
+ }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"f824ef11-0489-4ef4-bc11-9342d5aa7c5c\" name=\"Changes\" comment=\"New updates 2/26\">\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/fitnessclub/Family.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/fitnessclub/Family.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/fitnessclub/Premium.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/fitnessclub/Premium.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/fitnessclub/StudioManager.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/fitnessclub/StudioManager.java\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Class\" />\n        <option value=\"JUnit4 Test Class\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n    <option name=\"UPDATE_TYPE\" value=\"REBASE\" />\n  </component>\n  <component name=\"GitHubPullRequestSearchHistory\"><![CDATA[{\n  \"lastFilter\": {\n    \"state\": \"OPEN\",\n    \"assignee\": \"joonbug12\"\n  }\n}]]></component>\n  <component name=\"GithubPullRequestsUISettings\">\n    <option name=\"selectedUrlAndAccountId\">\n      <UrlAndAccount>\n        <option name=\"accountId\" value=\"47df8025-b53b-44f5-8d37-55b88cab8539\" />\n        <option name=\"url\" value=\"https://github.com/joonbug12/FitnessClub.git\" />\n      </UrlAndAccount>\n    </option>\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;associatedIndex&quot;: 4\n}</component>\n  <component name=\"ProjectId\" id=\"2chgR3enwGB9t5WKGgOmXmpgL5a\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">{\n  &quot;keyToString&quot;: {\n    &quot;Application.MemberList.executor&quot;: &quot;Run&quot;,\n    &quot;Application.RunProject2.executor&quot;: &quot;Run&quot;,\n    &quot;Application.Schedule.executor&quot;: &quot;Run&quot;,\n    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,\n    &quot;JUnit.DateTest.executor&quot;: &quot;Run&quot;,\n    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,\n    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,\n    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\n    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit4&quot;,\n    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4&quot;: &quot;&quot;,\n    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\n    &quot;last_opened_file_path&quot;: &quot;/Users/joonsong/Desktop/Software Methodology /FitnessClub&quot;,\n    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/joonsong/Desktop/Software Methodology/FitnessClub/src/Main.java&quot;\n  }\n}</component>\n  <component name=\"RecentsManager\">\n    <key name=\"CreateTestDialog.Recents.Supers\">\n      <recent name=\"\" />\n    </key>\n    <key name=\"CreateTestDialog.RecentsKey\">\n      <recent name=\"fitnessclub\" />\n    </key>\n  </component>\n  <component name=\"RunManager\" selected=\"Application.RunProject2\">\n    <configuration name=\"RunProject2\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\n      <option name=\"MAIN_CLASS_NAME\" value=\"fitnessclub.RunProject2\" />\n      <module name=\"FitnessClub\" />\n      <extension name=\"coverage\">\n        <pattern>\n          <option name=\"PATTERN\" value=\"fitnessclub.*\" />\n          <option name=\"ENABLED\" value=\"true\" />\n        </pattern>\n      </extension>\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"DateTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\n      <module name=\"FitnessClub\" />\n      <extension name=\"coverage\">\n        <pattern>\n          <option name=\"PATTERN\" value=\"fitnessclub.*\" />\n          <option name=\"ENABLED\" value=\"true\" />\n        </pattern>\n      </extension>\n      <option name=\"PACKAGE_NAME\" value=\"fitnessclub\" />\n      <option name=\"MAIN_CLASS_NAME\" value=\"fitnessclub.DateTest\" />\n      <option name=\"TEST_OBJECT\" value=\"class\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"Application.RunProject2\" />\n        <item itemvalue=\"JUnit.DateTest\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"SharedIndexes\">\n    <attachedChunks>\n      <set>\n        <option value=\"jdk-21.0.2-openjdk-21.0.2-4caba194b151-322ed176\" />\n      </set>\n    </attachedChunks>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"f824ef11-0489-4ef4-bc11-9342d5aa7c5c\" name=\"Changes\" comment=\"\" />\n      <created>1708569214399</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1708569214399</updated>\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"New updates\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1708617401165</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1708617401165</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"New updates\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1708641808015</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1708641808015</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"New updates\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1708641880063</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1708641880063</updated>\n    </task>\n    <task id=\"LOCAL-00004\" summary=\"New updates\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1708712387529</created>\n      <option name=\"number\" value=\"00004\" />\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1708712387529</updated>\n    </task>\n    <task id=\"LOCAL-00005\" summary=\"New updates\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1708715457920</created>\n      <option name=\"number\" value=\"00005\" />\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1708715457920</updated>\n    </task>\n    <task id=\"LOCAL-00006\" summary=\"New updates\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1708715846172</created>\n      <option name=\"number\" value=\"00006\" />\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1708715846172</updated>\n    </task>\n    <task id=\"LOCAL-00007\" summary=\"New updates\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1708717852731</created>\n      <option name=\"number\" value=\"00007\" />\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1708717852731</updated>\n    </task>\n    <task id=\"LOCAL-00008\" summary=\"New updates 2/26\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1708990122348</created>\n      <option name=\"number\" value=\"00008\" />\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1708990122348</updated>\n    </task>\n    <task id=\"LOCAL-00009\" summary=\"New updates 2/26\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1708991462446</created>\n      <option name=\"number\" value=\"00009\" />\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1708991462446</updated>\n    </task>\n    <task id=\"LOCAL-00010\" summary=\"New updates 2/26\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1708996700149</created>\n      <option name=\"number\" value=\"00010\" />\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1708996700149</updated>\n    </task>\n    <task id=\"LOCAL-00011\" summary=\"New updates 2/26\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1709820888104</created>\n      <option name=\"number\" value=\"00011\" />\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1709820888104</updated>\n    </task>\n    <task id=\"LOCAL-00012\" summary=\"New updates 2/26\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1709821136542</created>\n      <option name=\"number\" value=\"00012\" />\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1709821136542</updated>\n    </task>\n    <task id=\"LOCAL-00013\" summary=\"New updates 2/26\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1709831411315</created>\n      <option name=\"number\" value=\"00013\" />\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1709831411315</updated>\n    </task>\n    <task id=\"LOCAL-00014\" summary=\"New updates 2/26\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1710778869179</created>\n      <option name=\"number\" value=\"00014\" />\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1710778869179</updated>\n    </task>\n    <task id=\"LOCAL-00015\" summary=\"New updates 2/26\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1710781759722</created>\n      <option name=\"number\" value=\"00015\" />\n      <option name=\"presentableId\" value=\"LOCAL-00015\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1710781759722</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"16\" />\n    <servers />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State />\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"New updates\" />\n    <MESSAGE value=\"New updates 2/26\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"New updates 2/26\" />\n  </component>\n  <component name=\"XDebuggerManager\">\n    <breakpoint-manager>\n      <breakpoints>\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\n          <url>file://$PROJECT_DIR$/src/Main.java</url>\n          <line>11</line>\n          <option name=\"timeStamp\" value=\"1\" />\n        </line-breakpoint>\n        <breakpoint enabled=\"true\" type=\"java-exception\">\n          <properties class=\"java.lang.NullPointerException\" package=\"java.lang\" />\n          <option name=\"timeStamp\" value=\"2\" />\n        </breakpoint>\n      </breakpoints>\n    </breakpoint-manager>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -4,10 +4,13 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="f824ef11-0489-4ef4-bc11-9342d5aa7c5c" name="Changes" comment="New updates 2/26">
++    <list default="true" id="f824ef11-0489-4ef4-bc11-9342d5aa7c5c" name="Changes" comment="new updates 3/18">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Family.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Family.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Premium.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Premium.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/fitnessclub/FitnessClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/FitnessClass.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Location.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Member.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/fitnessclub/MemberList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/MemberList.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Schedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Schedule.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/fitnessclub/StudioManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/StudioManager.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+@@ -251,7 +254,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1710781759722</updated>
+     </task>
+-    <option name="localTasksCounter" value="16" />
++    <task id="LOCAL-00016" summary="new updates 3/18">
++      <option name="closed" value="true" />
++      <created>1710782303719</created>
++      <option name="number" value="00016" />
++      <option name="presentableId" value="LOCAL-00016" />
++      <option name="project" value="LOCAL" />
++      <updated>1710782303719</updated>
++    </task>
++    <option name="localTasksCounter" value="17" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -268,7 +279,8 @@
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="New updates" />
+     <MESSAGE value="New updates 2/26" />
+-    <option name="LAST_COMMIT_MESSAGE" value="New updates 2/26" />
++    <MESSAGE value="new updates 3/18" />
++    <option name="LAST_COMMIT_MESSAGE" value="new updates 3/18" />
+   </component>
+   <component name="XDebuggerManager">
+     <breakpoint-manager>

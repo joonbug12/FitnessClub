@@ -1,0 +1,48 @@
+Index: src/fitnessclub/Schedule.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\npackage fitnessclub;\nimport java.util.Scanner;\nimport java.io.IOException;\nimport java.io.File;\n\n/**\n * this class holds an arraylist of classes and loads classes in from an input file\n * @author Joon Song, Connor Powell\n */\npublic class Schedule{\n    private FitnessClass[] classes;\n    private int numClasses;\n    private static final int NOT_FOUND = -1;\n\n    /**\n     * default constructor\n     */\n    public Schedule() {\n        classes = new FitnessClass[4];\n        numClasses=0;\n    }\n    public int find (FitnessClass fclass) {\n        for(int i = 0; i < classes.length;i++) {\n            if(classes[i].equals(fclass))\n                return i;\n        }\n        return NOT_FOUND;\n    }\n\n    public boolean contains(FitnessClass fclass) {\n        return find(fclass) != NOT_FOUND;\n    }\n\n    /**\n     * expands the array\n     */\n    private void growArray(){\n        FitnessClass[] temp = new FitnessClass[classes.length+4];\n        for(int i = 0; i < numClasses; i++) {\n            temp[i] = classes[i];\n        }\n        classes = temp;\n    }\n\n    /**\n     * create class\n     */\n    public void addClass(String[] tokens, int index){\n        Offer offer = StudioManager.getOffer(tokens[0]);\n        Instructor instructor = StudioManager.getInstructor(tokens[1]);\n        Time time = StudioManager.getTime(tokens[2]);\n        Location location = StudioManager.getLocation(tokens[3]);\n        FitnessClass theClass = new FitnessClass(offer,instructor,location,time,new MemberList(), new MemberList());\n        classes[index] = theClass;\n        //System.out.println(classes[index]);\n        numClasses++;\n        if(numClasses == classes.length)\n            growArray();\n    }\n\n    /**\n     * getter method\n     */\n    public FitnessClass[] getFitnessClasses(){\n        return classes;\n    }\n\n    /**\n     * getter method\n     */\n    public int getNumClasses(){return numClasses;}\n\n    /**\n     * Loads classes from text file\n     * @param file to be loaded\n     * @throws IOException error\n     */\n    public void load(File file) throws IOException {\n        if(!file.exists() || !file.isFile()) {throw new IOException();}\n        System.out.println(\"-fitness classes loaded-\");\n        Scanner scanner = new Scanner(file);\n        int index = 0;\n        if(numClasses==classes.length) {growArray();}\n        do{\n            String line = scanner.nextLine();\n            String[] tokens = line.split(\"\\\\s\");\n            if(tokens.length>=4){\n                addClass(tokens, index);\n            }\n            index++;\n        }while(scanner.hasNextLine());\n        printSchedule();\n        scanner.close();\n        System.out.println(\"-end of class list-\");\n    }\n\n\n    public void printSchedule(){\n        for(int i=0; i<numClasses;i++){\n            System.out.println(classes[i]);\n            if(classes[i].getMembers().getSize() > 0) {\n                System.out.println(\"[attendees]\");\n                classes[i].getMembers().printByLocation();\n            }\n            if(classes[i].getGuests().getSize() > 0) {\n                System.out.println(\"[guests]\");\n                classes[i].getGuests().printByLocation();\n            }\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/fitnessclub/Schedule.java b/src/fitnessclub/Schedule.java
+--- a/src/fitnessclub/Schedule.java	
++++ b/src/fitnessclub/Schedule.java	
+@@ -1,4 +1,3 @@
+-
+ package fitnessclub;
+ import java.util.Scanner;
+ import java.io.IOException;
+@@ -21,7 +20,7 @@
+         numClasses=0;
+     }
+     public int find (FitnessClass fclass) {
+-        for(int i = 0; i < classes.length;i++) {
++        for(int i = 0; i < numClasses;i++) {
+             if(classes[i].equals(fclass))
+                 return i;
+         }
+@@ -95,18 +94,20 @@
+         System.out.println("-end of class list-");
+     }
+ 
+-
+     public void printSchedule(){
++        System.out.println("-fitness classes-");
+         for(int i=0; i<numClasses;i++){
+             System.out.println(classes[i]);
+             if(classes[i].getMembers().getSize() > 0) {
+-                System.out.println("[attendees]");
++                System.out.println("[Attendees]");
+                 classes[i].getMembers().printByLocation();
+             }
+             if(classes[i].getGuests().getSize() > 0) {
+-                System.out.println("[guests]");
++                System.out.println("[Guests]");
+                 classes[i].getGuests().printByLocation();
+             }
+         }
++        System.out.println("-end of class list-");
++        System.out.println();
+     }
+ }
