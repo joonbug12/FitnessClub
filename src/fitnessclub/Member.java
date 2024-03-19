@@ -1,4 +1,3 @@
-
 package fitnessclub;
 public class Member implements Comparable <Member>{
     private Profile profile;
@@ -75,6 +74,4 @@ public class Member implements Comparable <Member>{
     public double bill(){
         return 0.0;
     }
-
-
 }

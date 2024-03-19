@@ -1,4 +1,3 @@
-
 package fitnessclub;
 /**
  * class
@@ -68,6 +67,14 @@ public class FitnessClass{
     public String toString(){
         return this.classInfo.toString().toUpperCase() + "-" + this.instructor.toString().toUpperCase() + ", " +
                 this.time +  ", " + this.studio.getCity().toUpperCase();
+    }
+
+    /**
+     * print to string but without classinfo
+     */
+    public String printClass(){
+        return this.instructor.toString().toUpperCase() + ", " + this.time +  ", " + this.studio.getCity().toUpperCase()
+                +", " + this.studio.getZipCode() + ", " +  this.studio.getCounty().toUpperCase();
     }
 
     /**

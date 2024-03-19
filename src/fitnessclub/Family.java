@@ -54,7 +54,7 @@ public class Family extends Member{
      */
     public void removeGuest(){
         this.guest=false;
-        System.out.println("guest removed");
+        System.out.println("Guest removed");
     }
 
     /**

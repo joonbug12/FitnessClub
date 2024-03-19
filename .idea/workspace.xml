@@ -7,7 +7,9 @@
     <list default="true" id="f824ef11-0489-4ef4-bc11-9342d5aa7c5c" name="Changes" comment="New updates 2/26">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fitnessclub/Family.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Family.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Premium.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Premium.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/FitnessClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/FitnessClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/Member.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnessclub/MemberList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/MemberList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fitnessclub/StudioManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnessclub/StudioManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -27,12 +29,12 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "joonbug12"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;joonbug12&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>

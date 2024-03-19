@@ -59,9 +59,23 @@ public class MemberList {
         return find(member) != NOT_FOUND;
     }
 
+    /**
+     * getter method
+     * @return size of memberList
+     */
     public int getSize() {return size;}
-    public Member [] getMembers() {return members;}
 
+    /**
+     * getter method
+     * @return member array
+     */
+    public Member[] retainMembers() {return members;}
+
+    /**
+     * getter method
+     * @param member member
+     * @return member
+     */
     public Member getMember(Member member) {
         if(contains(member))
             return members[find(member)];
@@ -74,9 +88,9 @@ public class MemberList {
      */
     public boolean add(Member member) {
         Date dob = member.getProfile().getDob();
-        if (!dob.isValid()) {System.out.println("Invalid DOB"); return false;}
-        if (!member.getProfile().getDob().over18()) {System.out.println("Not over 18"); return false;}
-        if (contains(member)) {System.out.println("Member already in class");return false;}
+        if (!dob.isValid()) {return false;}
+        if (!member.getProfile().getDob().over18()) {return false;}
+        if (contains(member)) {return false;}
         if (member.getProfile() == null || member.getLocation() == null || member.getExpirationDate()==null) {
             System.out.println("Missing information");
             return false;
@@ -197,9 +211,11 @@ public class MemberList {
                 }
             }
         }
+        System.out.println("-Members printed by location-");
         for (int i = 0; i < size; i++) {
             System.out.println(members[i].toString());
         }
+        System.out.println("-end of list-");
     }
 
 
@@ -236,9 +252,11 @@ public class MemberList {
                 }
             }
         }
+        System.out.println("-Members printed by location-");
         for (int i = 0; i < size; i++) {
             System.out.println(members[i].toString());
         }
+        System.out.println("-end of list-");
     }
 
 
@@ -246,9 +264,11 @@ public class MemberList {
      * print the array as is with the next due amounts
      */
     public void printFees(){
+        System.out.println("-Members printed by fees-");
         for (int i=0; i<size; i++) {
             System.out.println(members[i] + " [next due: $" + members[i].bill() + "]");
         }
+        System.out.println("-end of list-");
     }
 
 }

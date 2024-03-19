@@ -1,8 +1,8 @@
-
 package fitnessclub;
 import java.io.IOException;
 import java.util.Scanner;
 import java.io.File;
+import java.util.Calendar;
 
 /**
  * class used to run the project
@@ -220,58 +220,62 @@ public class StudioManager{
     public void register(String[] input) {
         if (input.length < 7) {System.out.println("missing data tokens");return;}
         Offer typeClass = getOffer(input[1]);
-        if (typeClass == null) {System.out.println("Class doesn't exist");return;}
+        if (typeClass == null) {System.out.println(input[1] + " - Class doesn't exist");return;}
         Instructor instructor = getInstructor(input[2]);
-        if (instructor == null) {System.out.println("instructor doesn't exist");return;}
+        if (instructor == null) {System.out.println(input[2] + " - instructor doesn't exist");return;}
         Location city = getLocation(input[3]);
-        if (city == null) {System.out.println("Location doesn't exist");return;}
-        String fname = input[4];
-        String lname = input[5];
-        String dob = input[6];
+        if (city == null) {System.out.println(input[3] + " - invalid studio location");return;}
+        String fname = input[4], lname = input[5], dob = input[6];
         String[] dateBirth = dob.split("/");
-        int month = Integer.parseInt(dateBirth[0]);
-        int day = Integer.parseInt(dateBirth[1]);
-        int year = Integer.parseInt(dateBirth[2]);
+        int month = Integer.parseInt(dateBirth[0]), day = Integer.parseInt(dateBirth[1]), year = Integer.parseInt(dateBirth[2]);
         Date date = new Date(month, day, year);
         Profile profile = new Profile(fname, lname, date);
-        Member member = new Member(profile, date, city);
-        if (!members.contains(member)) {System.out.println("member isn't in the database");return;}
+        Member member = new Member(profile, null, city);
+        if (!members.contains(member)) {System.out.println(profile + " - member isn't in the database");return;}
         FitnessClass temp = new FitnessClass(typeClass, instructor, city, null, null, null);
         if (!classes.contains(temp)) {System.out.println("Class doesn't exist");return;}
         FitnessClass fclass = classes.getFitnessClasses()[classes.find(temp)];
-
+        Member member1 = members.getMember(member);
+        if(fclass.getMembers().contains(member)) {System.out.println(fname + " " + lname + " is already in the class");}
         FitnessClass[] list = classes.getFitnessClasses();
         for (int i = 0; i < list.length && list[i] != null; i++) {
             if (list[i].getMembers().contains(member) && list[i].getTime().getHour() == fclass.getTime().getHour() &&
                     list[i].getTime().getMinute() == fclass.getTime().getMinute()) {
                 if(list[i].equals(fclass)) break;
-                System.out.println("Member has a time conflict");
+                System.out.println("Time Conflict - " + fname + " " +  lname + " is in another class held at " + list[i].
+                        getTime().toString() + " - " + list[i].getInstructor().toString() +" " +  list[i].getTime().
+                        toString() + ", " + list[i].getStudio().getCity().toUpperCase());
             }
         }
-        Member member1 = members.getMember(member);
+        String output=null;
+        if(!member1.getExpirationDate().todayOrAfter()){System.out.println(profile + " membership expired"); return;}
         if(!fclass.getMembers().add(member1)) return;
-        if(member1 instanceof Basic) {
-            if(fclass.getStudio() != city) {
-                System.out.println("Basic members can only attend classes from their home studio");
-                return;
-            }
+        if(member1 instanceof Family){output = "Family";}
+        if(member1 instanceof Premium){output= "Premium";}
+        if(member1 instanceof Basic) {output = "Basic";
+            if(fclass.getStudio() != city) {System.out.println("Basic members can only attend classes from their home studio");return;}
             ((Basic) member1).setNumClasses(((Basic) member1).getNumClasses() + 1);
         }
-        System.out.println("Member added to class successfully");
+        System.out.println(fname + " " + lname + " is attending a class at " + fclass.getStudio().getCity()+ " - ["+
+                output+ "] home studio at" + member1.getLocation().getCity());
+        System.out.println(fname + " " + lname + " attendance recorded " + fclass.getClassInfo().toString().toUpperCase()
+                + " at " + fclass.getStudio().toString());
     }
 
     /**
      * helper method for U function
      */
     public void removeFromClass(String[] tokens){
-        if(tokens.length<5){
+        if(tokens.length<7){
             System.out.println("missing data tokens");
             return;
         }
         Offer typeClass = getOffer(tokens[1]);
-        String fname = tokens[2];
-        String lname = tokens[3];
-        String dob = tokens[4];
+        Instructor instructor = getInstructor(tokens[2]);
+        Location city = getLocation(tokens[3]);
+        String fname = tokens[4];
+        String lname = tokens[5];
+        String dob = tokens[6];
         String[] dateBirth = dob.split("/");
         int month = Integer.parseInt(dateBirth[0]);
         int day = Integer.parseInt(dateBirth[1]);
@@ -279,15 +283,15 @@ public class StudioManager{
         Date date = new Date(month, day, year);
         Profile profile = new Profile(fname,lname,date);
         Member member = new Member(profile, null,null);
-        FitnessClass[] fitnessClasses = classes.getFitnessClasses();
-        for(int i=0; i< classes.getNumClasses(); i++){
-            FitnessClass currentClass = fitnessClasses[i];
-            if(currentClass.getClassInfo() == typeClass){
-                MemberList classMembers = currentClass.getMembers();
-                if(classMembers.contains(member)){
-                    classMembers.remove(member);
-                }
-            }
+        FitnessClass temp = new FitnessClass(typeClass, instructor, city, null, null, null);
+        if (!classes.contains(temp)) {System.out.println("Class doesn't exist");return;}
+        FitnessClass fclass = classes.getFitnessClasses()[classes.find(temp)];
+        MemberList classMembers = fclass.getMembers();
+        if(classMembers.contains(member)){
+            classMembers.remove(member);
+            System.out.println(fname + " " + lname + " is removed from " + fclass.printClass());
+        }else{
+            System.out.println(fname + " " + lname + " is not in " + fclass.printClass());
         }
     }
 
@@ -300,7 +304,7 @@ public class StudioManager{
             return;
         }
         Offer typeClass = getOffer(tokens[1]);
-        if (typeClass == null) {System.out.println("Class doesn't exist");return;}
+        if (typeClass == null) {System.out.println("offer doesn't exist");return;}
         Instructor instructor = getInstructor(tokens[2]);
         if (instructor == null) {System.out.println("instructor doesn't exist");return;}
         Location city = getLocation(tokens[3]);
@@ -320,13 +324,13 @@ public class StudioManager{
         Member member1 = members.getMember(member);
         if(member1 instanceof Basic) {System.out.println("Basic members cant add guests");}
         else if(member1 instanceof Family){
-            if(fclass.getStudio() != city) {System.out.println("Family members can only add guests from their home studio"); return;}
+            if(fclass.getStudio() != city) {System.out.println("Family members can only add guests from their home studio");}
             else{
-                if(((Family) member1).containsGuest()){System.out.println("This member already has a guest"); return;}
+                if(((Family) member1).containsGuest()){System.out.println("This member already has a guest");}
                 else{((Family) member1).addNewGuest();}
             }
         }else{
-            if(((Premium) member1).numGuests()<1){System.out.println("You already have the max amount of guests"); return;}
+            if(((Premium) member1).numGuests()<1){System.out.println("You already have the max amount of guests");}
             else{
                 ((Premium) member1).addAGuest();
             }
@@ -342,11 +346,11 @@ public class StudioManager{
             return;
         }
         Offer typeClass = getOffer(tokens[1]);
-        if (typeClass == null) {System.out.println("Class doesn't exist");return;}
+        if (typeClass == null) {System.out.println(tokens[1] + " Class doesn't exist");return;}
         Instructor instructor = getInstructor(tokens[2]);
-        if (instructor == null) {System.out.println("instructor doesn't exist");return;}
+        if (instructor == null) {System.out.println(tokens[2] + " instructor doesn't exist");return;}
         Location city = getLocation(tokens[3]);
-        if (city == null) {System.out.println("Location doesn't exist");return;}
+        if (city == null) {System.out.println(tokens[3] + " Location doesn't exist");return;}
         String fname = tokens[4], lname = tokens[5], dob = tokens[6];
         String[] dateBirth = dob.split("/");
         int month = Integer.parseInt(dateBirth[0]);
@@ -355,12 +359,12 @@ public class StudioManager{
         Date date = new Date(month, day, year);
         Profile profile = new Profile(fname, lname, date);
         Member member = new Member(profile, date, city);
-        if (!members.contains(member)) {System.out.println("member isn't in the database");return;}
+        if (!members.contains(member)) {System.out.println(fname + " " + lname + " isn't in the database");return;}
         FitnessClass temp = new FitnessClass(typeClass, instructor, city, null, null, null);
         if (!classes.contains(temp)) {System.out.println("Class doesn't exist");return;}
         FitnessClass fclass = classes.getFitnessClasses()[classes.find(temp)];
         Member member1 = members.getMember(member);
-        if(member1 instanceof Basic) {System.out.println("Basic members don't have any guests");}
+        if(member1 instanceof Basic) {System.out.println("Basic members cant have any guests");}
         else if(member1 instanceof Family){
             if(fclass.getStudio() != city) {System.out.println("Family members can only have guests from their home studio");}
             else{
@@ -374,7 +378,6 @@ public class StudioManager{
             }
         }
     }
-
 
     /**
      * run the project
@@ -397,9 +400,9 @@ public class StudioManager{
                 case "R" -> register(tokens);
                 case "U" -> removeFromClass(tokens);
                 case "RG" -> addGuest(tokens);
-                case "UG" -> {/*remove guest from class*/}
+                case "UG" -> removeGuest(tokens);
                 case "Q" -> {break outerLoop;}
-                default -> System.out.println(command + " is an Invalid Command!");
+                default -> System.out.println(command + " is an Invalid Command!" + "\n");
             }
         }while(scanner.hasNextLine());
         scanner.close();

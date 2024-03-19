@@ -1,4 +1,3 @@
-
 package fitnessclub;
 import java.util.Scanner;
 import java.io.IOException;
@@ -95,18 +94,19 @@ public class Schedule{
         System.out.println("-end of class list-");
     }
 
-
     public void printSchedule(){
+        System.out.println("-fitness classes-");
         for(int i=0; i<numClasses;i++){
             System.out.println(classes[i]);
             if(classes[i].getMembers().getSize() > 0) {
-                System.out.println("[attendees]");
+                System.out.println("[Attendees]");
                 classes[i].getMembers().printByLocation();
             }
             if(classes[i].getGuests().getSize() > 0) {
-                System.out.println("[guests]");
+                System.out.println("[Guests]");
                 classes[i].getGuests().printByLocation();
             }
         }
+        System.out.println("-end of class list-");
     }
 }
